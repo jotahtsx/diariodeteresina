@@ -3,54 +3,39 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index(): JsonResponse
+    /**
+     * Lista todas as notícias com paginação e filtros.
+     */
+    public function index(Request $request)
     {
-        $posts = Post::with(['author', 'category'])
-            ->latest()
-            ->get()
-            ->map(function ($post) {
-                return [
-                    'id'         => $post->id,
-                    'titulo'     => $post->title,
-                    'slug'       => $post->slug,
-                    'resumo'     => str($post->content)->limit(150),
-                    'publicado'  => $post->created_at->format('d/m/Y H:i'),
-                    'categoria'  => [
-                        'nome' => $post->category->name,
-                        'cor'  => $post->category->color,
-                    ],
-                    'autor'      => [
-                        'nome'   => $post->author->name,
-                        'origem' => "{$post->author->city}/{$post->author->state}",
-                    ],
-                    'links' => [
-                        'instagram' => $post->instagram_url,
-                    ]
-                ];
+        $query = Post::with(['author', 'category'])->latest();
+        if ($request->filled('q')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->q . '%')
+                    ->orWhere('content', 'like', '%' . $request->q . '%');
             });
-
-        return response()->json($posts);
+        }
+        if ($request->filled('categoria')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->categoria);
+            });
+        }
+        $posts = $query->paginate(10);
+        return PostResource::collection($posts);
     }
 
-
-    public function show(Post $post): JsonResponse
-    {        // Carregamos os relacionamentos para o objeto $post que o Laravel já achou
+    /**
+     * Exibe uma única notícia detalhada.
+     */
+    public function show(Post $post)
+    {
         $post->load(['author', 'category']);
-
-        return response()->json([
-            'titulo'   => $post->title,
-            'slug'     => $post->slug,
-            'conteudo' => $post->content,
-            'autor'    => $post->author->name . " ({$post->author->city}/{$post->author->state})",
-            'categoria' => $post->category->name,
-            'links'    => [
-                'instagram' => $post->instagram_url,
-            ]
-        ]);
+        return new PostResource($post);
     }
 }

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Diário de Teresina",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
