@@ -1,0 +1,28 @@
+meta {
+  name: Cadastrando Post
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{site}}/noticias
+  body: json
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:json {
+  {
+    "titulo": "Novo Portal em Teresina",
+    "resumo": "Estamos testando a validação de dados com PostRequest...",
+    "categoria_id": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

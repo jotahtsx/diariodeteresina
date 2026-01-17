@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\PostRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
@@ -38,4 +39,15 @@ class PostController extends Controller
         $post->load(['author', 'category']);
         return new PostResource($post);
     }
+
+    /**
+    * Cadastra uma nova notícia
+    */
+    public function store(PostRequest $request)
+    {
+        $post = Post::create($request->validated());
+
+        return response()->json($post, 21);
+    }
+
 }

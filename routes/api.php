@@ -38,3 +38,5 @@ Route::get('/noticias', [PostController::class, 'index']);
 
 // Detalhe de uma notícia específica pelo slug
 Route::get('/noticias/{post:slug}', [PostController::class, 'show']);
+
+Route::post('/noticias', [PostController::class, 'store']);

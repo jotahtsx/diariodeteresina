@@ -3,36 +3,40 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PostRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'titulo' => 'required|min:5|max:255',
-            'resumo' => 'required|min:10',
-            'categoria_id' => 'required|exists:categorias,id'
+            'title'       => 'required|min:5|max:255',
+            'content'     => 'required|min:10',
+            'category_id' => 'required|exists:categories,id'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'titulo.required' => 'Ei, a notícia precisa de um título',
-            'categoria_id.exists' => 'Essa categoria não existe no sistema'
-        ]
+            'title.required'       => 'Ei, a notícia precisa de um título',
+            'content.required'     => 'Ei, o resumo precisa de um conteúdo',
+            'category_id.required' => 'Você precisa selecionar uma categoria',
+            'category_id.exists'   => 'Essa categoria não existe no sistema',
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => 'Erro de validação nos dados enviados',
+            'errors'  => $validator->errors(),
+        ], 422));
     }
 }
