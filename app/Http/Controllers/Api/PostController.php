@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -40,14 +41,15 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
-    /**
-    * Cadastra uma nova notícia
-    */
+
     public function store(PostRequest $request)
     {
+        // O Model vai interceptar o 'title' e criar o 'slug' no momento do save!
         $post = Post::create($request->validated());
 
-        return response()->json($post, 21);
+        return response()->json([
+            'message' => 'Post criado com sucesso!',
+            'data'    => $post
+        ], 201);
     }
-
 }
