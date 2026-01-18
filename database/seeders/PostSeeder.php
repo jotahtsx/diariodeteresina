@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Post;
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\Post;
+use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
 {
@@ -15,11 +15,12 @@ class PostSeeder extends Seeder
         $category = Category::where('slug', 'politica')->first();
 
         Post::create([
-            'author_id'   => $author->id,
+            'author_id' => $author->id,
             'category_id' => $category->id,
-            'title'       => 'Desenvolvimento do Novo Portal Diário de Teresina',
-            'content'     => 'O sistema está sendo migrado para uma estrutura Laravel de alta performance...',
+            'title' => 'Desenvolvimento do Novo Portal Diário de Teresina',
+            'content' => 'O sistema está sendo migrado para uma estrutura Laravel de alta performance...',
             'instagram_url' => 'https://www.instagram.com/diariodeteresina',
+            'image' => 'posts/noticia-exemplo.webp', // Adicionando o caminho da imagem
         ]);
     }
 }

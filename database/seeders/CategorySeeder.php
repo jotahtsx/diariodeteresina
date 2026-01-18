@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
@@ -17,8 +17,8 @@ class CategorySeeder extends Seeder
 
         foreach ($categories as $cat) {
             Category::create([
-                'name'  => $cat,
-                'slug'  => Str::slug($cat),
+                'name' => $cat,
+                'slug' => Str::slug($cat),
                 'color' => '#f44336',
             ]);
         }

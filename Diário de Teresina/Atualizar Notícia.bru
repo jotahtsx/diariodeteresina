@@ -1,0 +1,29 @@
+meta {
+  name: Atualizar Notícia
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{site}}/noticia/1
+  body: multipartForm
+  auth: inherit
+}
+
+params:query {
+  ~"Nova manchete do Diário": 
+}
+
+body:multipart-form {
+  _method: PUT @contentType(Text)
+  title: Nova manchete do Diário @contentType(Text)
+  content: O conteúdo atualizado da notícia... @contentType(Text)
+  category_id: 2 @contentType(Text)
+  author_id: 1 @contentType(Text)
+  image: @file(/home/jotahdev/Downloads/00000.jpeg) @contentType(File)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

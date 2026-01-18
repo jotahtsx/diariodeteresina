@@ -12,26 +12,24 @@ class PostResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
-            'id'        => $this->id,
-            'titulo'    => $this->title,
-            'slug'      => $this->slug,
-            'resumo'    => str($this->content)->limit(150),
-            'publicado' => $this->created_at->format('d/m/Y H:i'),
-            'categoria' => [
-                'nome' => $this->category->name,
-                'cor'  => $this->category->color,
-                'slug' => $this->category->slug,
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'slug'          => $this->slug,
+            'content'       => $this->content,
+            'image_url'     => $this->image ? asset('storage/' . $this->image) : null,
+            'instagram_url' => $this->instagram_url,
+            'category'      => [
+                'id'   => $this->category->id,
+                'name' => $this->category->name,
             ],
-            'autor'     => [
-                'nome'   => $this->author->name,
-                'origem' => "{$this->author->city}/{$this->author->state}",
+            'author'        => [
+                'id'   => $this->author->id,
+                'name' => $this->author->name,
             ],
-            'links'     => [
-                'instagram' => $this->instagram_url,
-            ]
+            'created_at'    => $this->created_at->format('d/m/Y H:i'),
         ];
     }
 }

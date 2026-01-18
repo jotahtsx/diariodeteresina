@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Post;
 use App\Http\Controllers\Api\PostController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 // Listagem principal de notícias do Diário de Teresina
@@ -18,7 +18,7 @@ Route::get('/noticias', function () {
                 'categoria' => $post->category->name ?? 'Geral',
                 'autor' => [
                     'nome' => $post->author->name ?? 'Redação',
-                    'localizacao' => ($post->author->city ?? 'Teresina') . '/' . ($post->author->state ?? 'PI'),
+                    'localizacao' => ($post->author->city ?? 'Teresina').'/'.($post->author->state ?? 'PI'),
                 ],
                 'publicado_em' => $post->created_at->format('d/m/Y H:i'),
                 'links_externos' => [
@@ -28,7 +28,7 @@ Route::get('/noticias', function () {
                 'relacionadas' => Post::where('category_id', $post->category_id)
                     ->where('id', '!=', $post->id)
                     ->limit(3)
-                    ->get(['id', 'title', 'slug'])
+                    ->get(['id', 'title', 'slug']),
             ];
         });
 });
@@ -37,6 +37,13 @@ Route::get('/noticias', function () {
 Route::get('/noticias', [PostController::class, 'index']);
 
 // Detalhe de uma notícia específica pelo slug
-Route::get('/noticias/{post:slug}', [PostController::class, 'show']);
+Route::get('/noticia/{post:slug}', [PostController::class, 'show']);
 
-Route::post('/noticias', [PostController::class, 'store']);
+// Cadastra a notícia
+Route::post('/noticia', [PostController::class, 'store']);
+
+// Editar a notícia
+Route::put('/noticia/{post}', [PostController::class, 'update']);
+
+// Deletando a notícia
+Route::delete('/noticia/{post}', [PostController::class, 'destroy']);

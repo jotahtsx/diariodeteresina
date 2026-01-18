@@ -14,7 +14,8 @@ class Post extends Model
         'title',
         'slug',
         'content',
-        'instagram_url'
+        'image',
+        'instagram_url',
     ];
 
     // O "Cérebro" do Slug Automático

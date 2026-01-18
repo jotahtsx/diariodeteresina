@@ -1,12 +1,12 @@
 meta {
-  name: Cadastrando Post
+  name: Cadastrando Notícia
   type: http
   seq: 2
 }
 
 post {
-  url: {{site}}/noticias
-  body: json
+  url: {{site}}/noticia
+  body: multipartForm
   auth: inherit
 }
 
@@ -21,6 +21,14 @@ body:json {
     "category_id": 1,
     "author_id": 1
   }
+}
+
+body:multipart-form {
+  title: Isso vai rolar
+  content: teste teste teste teste
+  category_id: 1
+  author_id: 1
+  image: @file(/home/jotahdev/Downloads/6e738476-f195-461c-941e-eb5751e5c35f.png)
 }
 
 settings {

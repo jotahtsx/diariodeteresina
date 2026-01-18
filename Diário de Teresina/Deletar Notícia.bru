@@ -1,17 +1,13 @@
 meta {
-  name: Listar Notícias
+  name: Deletar Notícia
   type: http
-  seq: 1
+  seq: 3
 }
 
-get {
-  url: {{site}}/noticias
+delete {
+  url: {{site}}/noticia/6
   body: none
   auth: inherit
-}
-
-params:query {
-  ~q: categoria
 }
 
 settings {
