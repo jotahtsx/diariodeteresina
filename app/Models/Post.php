@@ -18,11 +18,12 @@ class Post extends Model
         'instagram_url',
     ];
 
-    // O "Cérebro" do Slug Automático
     protected static function booted()
     {
+        parent::boot();
         static::creating(function ($post) {
-            // Se o slug não for enviado manualmente, ele gera a partir do título
+            $slug = Str::slug($post->title);
+            $count = static::where('slug', 'LIKE', "{$slug}%")->count();
             if (empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
             }

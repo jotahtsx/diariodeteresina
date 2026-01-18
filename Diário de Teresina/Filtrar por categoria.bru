@@ -1,17 +1,17 @@
 meta {
-  name: Listar Notícias
+  name: Filtrar por categoria
   type: http
-  seq: 3
+  seq: 7
 }
 
 get {
-  url: {{site}}/noticias
+  url: {{site}}/noticias?categoria=policial
   body: none
   auth: inherit
 }
 
 params:query {
-  ~q: categoria
+  categoria: policial
 }
 
 settings {

@@ -1,11 +1,11 @@
 meta {
-  name: Deletar Notícia
+  name: LIstar Categorias
   type: http
-  seq: 6
+  seq: 2
 }
 
-delete {
-  url: {{site}}/noticia/5
+get {
+  url: {{site}}/categorias
   body: none
   auth: inherit
 }

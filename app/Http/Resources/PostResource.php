@@ -15,21 +15,28 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'            => $this->id,
-            'title'         => $this->title,
-            'slug'          => $this->slug,
-            'content'       => $this->content,
-            'image_url'     => $this->image ? asset('storage/' . $this->image) : null,
-            'instagram_url' => $this->instagram_url,
-            'category'      => [
-                'id'   => $this->category->id,
-                'name' => $this->category->name,
+            'id' => $this->id,
+            'titulo' => $this->title,
+            'slug' => $this->slug,
+            'conteudo' => $this->content,
+            'imagem' => $this->image ? asset('storage/' . $this->image) : null,
+            'categoria' => $this->category->name ?? 'Geral',
+            'autor' => [
+                'nome' => $this->author->name ?? 'Redação',
+                'localizacao' => ($this->author->city ?? 'Teresina').'/'.($this->author->state ?? 'PI'),
             ],
-            'author'        => [
-                'id'   => $this->author->id,
-                'name' => $this->author->name,
+            'publicado_em' => $this->created_at->format('d/m/Y H:i'),
+            'links_externos' => [
+                'instagram' => $this->instagram_post_url,
+                'telegram' => $this->telegram_message_id,
             ],
-            'created_at'    => $this->created_at->format('d/m/Y H:i'),
+            // Carrega as relacionadas apenas se você quiser (evita lentidão)
+            'relacionadas' => $this->when($request->routeIs('*.show'), function () {
+                return \App\Models\Post::where('category_id', $this->category_id)
+                    ->where('id', '!=', $this->id)
+                    ->limit(3)
+                    ->get(['id', 'title', 'slug']);
+            }),
         ];
     }
 }

@@ -1,0 +1,25 @@
+meta {
+  name: Atualizar notícia
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{site}}/noticia/22
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  _method: PUT
+  title: Oi, é um subtítulo 2
+  content: Oi, é um conteúdo
+  category_id: 1
+  author_id: 1
+  image: @file(/home/jotahdev/Downloads/00000.jpeg)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

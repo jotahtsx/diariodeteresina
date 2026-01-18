@@ -1,17 +1,21 @@
 meta {
   name: Cadastrando Notícia
   type: http
-  seq: 2
+  seq: 4
 }
 
 post {
   url: {{site}}/noticia
   body: multipartForm
-  auth: inherit
+  auth: bearer
 }
 
 headers {
   Accept: application/json
+}
+
+auth:bearer {
+  token: 1|XfVfzrpuwZoyYfP5Ea8UwMNeZBmNMoxd1Vu40ljw15cf958a
 }
 
 body:json {
@@ -24,11 +28,11 @@ body:json {
 }
 
 body:multipart-form {
-  title: Isso vai rolar
-  content: teste teste teste teste
-  category_id: 1
+  title: Teresina registra recorde de arborização em 2026
+  content: prefeitura de Teresina anunciou hoje novos dados sobre o plantio de mudas...
+  image: @file(/home/jotahdev/Downloads/00000.jpeg)
   author_id: 1
-  image: @file(/home/jotahdev/Downloads/6e738476-f195-461c-941e-eb5751e5c35f.png)
+  category_id: 2
 }
 
 settings {
