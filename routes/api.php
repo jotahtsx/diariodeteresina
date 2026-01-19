@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
-use App\Models\Category;
 use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', function (Request $request) {
         return response()->json([
             'user' => $request->user(),
-            'permissions' => $request->user()->getAllPermissions()->pluck('name')
+            'permissions' => $request->user()->getAllPermissions()->pluck('name'),
         ]);
     });
 });
