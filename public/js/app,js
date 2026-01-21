@@ -1,0 +1,12 @@
+// public/js/app.js
+import { initBannerEspecial } from './modules/banner.js';
+import { initCategoryBar } from './modules/categories.js';
+import { initFeaturedPost } from './modules/featured.js';
+
+console.log('DIÁRIO DE TERESINA - SISTEMA ONLINE');
+
+document.addEventListener('DOMContentLoaded', () => {
+    initBannerEspecial();
+    initCategoryBar();
+    initFeaturedPost();
+});

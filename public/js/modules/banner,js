@@ -1,0 +1,32 @@
+/**
+ * Lógica do Banner Especial - Diário de Teresina
+ */
+export const initBannerEspecial = async () => {
+    const el = {
+        container: document.getElementById('banner-especial-container'),
+        content: document.getElementById('banner-especial-content'),
+        texto: document.getElementById('banner-texto')
+    };
+
+    if (!el.container) return;
+
+    try {
+        const response = await fetch('/api/banner-especial');
+        const data = await response.json();
+
+        if (data.visible) {
+            el.texto.innerText = data.texto;
+            
+            // Aplicando o estilo "Soft" vindo da API
+            if (data.estilo) {
+                el.content.style.backgroundColor = data.estilo.fundo;
+                el.content.style.borderRadius = data.estilo.arredondamento;
+            }
+
+            el.container.classList.remove('hidden');
+            el.container.classList.add('animate-soft-entry');
+        }
+    } catch (error) {
+        console.error('Erro ao carregar banner:', error);
+    }
+};
