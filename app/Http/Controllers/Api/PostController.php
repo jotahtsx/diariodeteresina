@@ -21,6 +21,16 @@ class PostController extends Controller
             ->with(['author', 'category'])
             ->latest();
 
+        // REGRAS DE VISIBILIDADE: Se não for admin, só vê o que está PUBLICADO
+        if (! $request->has('admin')) {
+            $query->where('status', 'publicado');
+        }
+
+        // FILTRO: Destaques (?destaque=1)
+        if ($request->boolean('destaque')) {
+            $query->where('is_featured', true);
+        }
+
         // FILTRO: Busca por texto
         if ($request->filled('q')) {
             $query->where(function ($q) use ($request) {
@@ -36,18 +46,12 @@ class PostController extends Controller
             });
         }
 
-        // NOVIDADE: Filtro por intervalo de datas
+        // FILTRO: Intervalo de datas
         if ($request->filled('data_inicio')) {
             $query->whereDate('created_at', '>=', $request->data_inicio);
         }
-
         if ($request->filled('data_fim')) {
             $query->whereDate('created_at', '<=', $request->data_fim);
-        }
-
-        // FILTRO: Destaques (?destaque=1)
-        if ($request->has('destaque')) {
-            return PostResource::collection($query->limit(3)->get());
         }
 
         return PostResource::collection($query->paginate(10));
@@ -56,22 +60,24 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::with(['author', 'category'])->findOrFail($id);
-        $post->increment('views');
+
+        // Só incrementa views se estiver publicado (evita inflar views em rascunhos)
+        if ($post->status === 'publicado') {
+            $post->increment('views');
+        }
+
         return new PostResource($post);
     }
 
     public function store(PostRequest $request)
     {
         $this->authorize('criar noticias');
-
         $data = $request->validated();
 
-        // Garante o slug logo no início
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']) . '-' . rand(100, 999);
         }
 
-        // Imagem com nome personalizado (SEO)
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $fileName = $data['slug'] . '-' . time() . '.' . $file->getClientOriginalExtension();
@@ -92,21 +98,17 @@ class PostController extends Controller
     public function update(PostRequest $request, $id)
     {
         $this->authorize('criar noticias');
-        
         $post = Post::findOrFail($id);
         $data = $request->validated();
 
-        // Atualiza o slug se o título mudar e não houver slug manual
         if (empty($data['slug']) && isset($data['title'])) {
             $data['slug'] = Str::slug($data['title']) . '-' . rand(100, 999);
         }
 
-        // Atualização da Imagem
         if ($request->hasFile('image')) {
             if ($post->image) {
                 Storage::disk('public')->delete($post->image);
             }
-            
             $file = $request->file('image');
             $fileName = ($data['slug'] ?? $post->slug) . '-' . time() . '.' . $file->getClientOriginalExtension();
             $data['image'] = $file->storeAs('posts', $fileName, 'public');
@@ -124,7 +126,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         $this->authorize('criar noticias');
-
         $post = Post::findOrFail($id);
 
         if ($post->image) {
@@ -133,25 +134,20 @@ class PostController extends Controller
 
         $post->delete();
 
-        return response()->json([
-            'message' => 'Notícia removida com sucesso!',
-        ]);
+        return response()->json(['message' => 'Notícia removida com sucesso!']);
     }
 
-    /**
- * Notícias Relacionadas (Público)
- * Busca posts da mesma categoria, excluindo o atual.
- */
     public function relacionadas($id)
     {
         $post = Post::findOrFail($id);
 
         $relacionadas = Post::query()
             ->with(['author', 'category'])
-            ->where('category_id', $post->category_id) // Mesma categoria
-            ->where('id', '!=', $post->id)             // Exclui a notícia atual
+            ->where('status', 'publicado')             // Garante que só venham publicadas
+            ->where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
             ->latest()
-            ->limit(3)                                 // Traz apenas as 3 mais recentes
+            ->limit(3)
             ->get();
 
         return PostResource::collection($relacionadas);
@@ -160,6 +156,7 @@ class PostController extends Controller
     public function maisLidas()
     {
         $posts = Post::with(['author', 'category'])
+            ->where('status', 'publicado') // Público só vê as mais lidas publicadas
             ->orderBy('views', 'desc')
             ->limit(5)
             ->get();

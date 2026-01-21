@@ -21,6 +21,7 @@ class Post extends Model
         'instagram_url',
         'telegram_message_id',
         'views',
+        'is_featured',
     ];
 
     /**

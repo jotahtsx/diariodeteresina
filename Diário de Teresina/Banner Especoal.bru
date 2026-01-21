@@ -1,0 +1,29 @@
+meta {
+  name: Banner Especoal
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{site}}/banner-especial
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 15|Yzn4NGhAdweNS3jQZ3Gi73j46Fl6t0gyE9v0bU1fe01795b7
+}
+
+body:json {
+  {
+    "titulo": "Acompanhe a Seleção",
+    "confronto": "Brasil 🇧🇷 vs 🇫🇷 França",
+    "is_active": true,
+    "cor_fundo": "#E8F5E9"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
