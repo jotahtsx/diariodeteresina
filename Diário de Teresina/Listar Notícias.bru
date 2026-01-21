@@ -1,17 +1,21 @@
 meta {
   name: Listar Notícias
   type: http
-  seq: 3
+  seq: 8
 }
 
 get {
-  url: {{site}}/api/noticia/5
+  url: {{site}}/noticias
   body: none
   auth: bearer
 }
 
 params:query {
   ~q: categoria
+}
+
+auth:bearer {
+  token: 6|fbiycYWfFPRwFSzBUxVY4suj95fhVrQ4KzgeSA72db948379
 }
 
 settings {

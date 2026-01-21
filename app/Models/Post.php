@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use App\Models\User;
+use App\Models\Category;
 
 class Post extends Model
 {
+    /**
+     * Campos permitidos para mass assignment
+     */
     protected $fillable = [
         'author_id',
         'category_id',
@@ -16,27 +21,60 @@ class Post extends Model
         'content',
         'image',
         'instagram_url',
+        'telegram_message_id',
+        'views'
     ];
 
+    /**
+     * Geração automática de slug único
+     */
     protected static function booted()
     {
-        parent::boot();
-        static::creating(function ($post) {
-            $slug = Str::slug($post->title);
-            $count = static::where('slug', 'LIKE', "{$slug}%")->count();
+        static::creating(function (Post $post) {
             if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $slug = Str::slug($post->title);
+                $count = static::where('slug', 'LIKE', "{$slug}%")->count();
+                $post->slug = $count ? "{$slug}-" . ($count + 1) : $slug;
+            }
+        });
+
+        static::updating(function (Post $post) {
+            if ($post->isDirty('title')) {
+                $slug = Str::slug($post->title);
+                $count = static::where('slug', 'LIKE', "{$slug}%")
+                    ->where('id', '!=', $post->id)
+                    ->count();
+
+                $post->slug = $count ? "{$slug}-" . ($count + 1) : $slug;
             }
         });
     }
 
+    /**
+     * Autor da notícia (User)
+     */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
 
+    /**
+     * Categoria da notícia
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Notícias relacionadas (mesma categoria)
+     */
+    public function relacionadas()
+    {
+        return $this->hasMany(
+            self::class,
+            'category_id',
+            'category_id'
+        );
     }
 }

@@ -3,8 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-    //
+    use HasFactory;
+
+    // Adicione esta linha aqui embaixo
+    protected $fillable = [
+        'name',
+        'slug',
+        'color'
+    ];
+
+    /**
+     * Relacionamento com as Notícias (Posts)
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

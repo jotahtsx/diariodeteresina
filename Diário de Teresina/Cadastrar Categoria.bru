@@ -1,17 +1,24 @@
 meta {
-  name: Deletar Notícia
+  name: Cadastrar Categoria
   type: http
-  seq: 12
+  seq: 4
 }
 
-delete {
-  url: {{site}}/noticia/8
-  body: none
+post {
+  url: {{site}}/categoria
+  body: json
   auth: bearer
 }
 
 auth:bearer {
   token: 14|tgD0zJ2913AiOm5FZ4ytI7dZXIQocbqKs7guHMvEfd28dd28
+}
+
+body:json {
+  {
+    "name": "Cultura5",
+    "color": "#8e44ad"
+  }
 }
 
 settings {

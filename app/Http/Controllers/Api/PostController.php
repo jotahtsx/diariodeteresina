@@ -17,8 +17,11 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $query = Post::with(['author', 'category'])->latest();
+        $query = Post::query()
+            ->with(['author', 'category'])
+            ->latest();
 
+        // FILTRO: Busca por texto
         if ($request->filled('q')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->q . '%')
@@ -26,19 +29,34 @@ class PostController extends Controller
             });
         }
 
+        // FILTRO: Categoria por Slug
         if ($request->filled('categoria')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->categoria);
             });
         }
 
+        // NOVIDADE: Filtro por intervalo de datas
+        if ($request->filled('data_inicio')) {
+            $query->whereDate('created_at', '>=', $request->data_inicio);
+        }
+
+        if ($request->filled('data_fim')) {
+            $query->whereDate('created_at', '<=', $request->data_fim);
+        }
+
+        // FILTRO: Destaques (?destaque=1)
+        if ($request->has('destaque')) {
+            return PostResource::collection($query->limit(3)->get());
+        }
+
         return PostResource::collection($query->paginate(10));
     }
 
-    public function show(Post $post)
+    public function show($id)
     {
-        $post->load(['author', 'category']);
-
+        $post = Post::with(['author', 'category'])->findOrFail($id);
+        $post->increment('views');
         return new PostResource($post);
     }
 
@@ -48,20 +66,22 @@ class PostController extends Controller
 
         $data = $request->validated();
 
-        // Tratamento de Imagem
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('posts', 'public');
+        // Garante o slug logo no início
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['title']) . '-' . rand(100, 999);
         }
 
-        // Lógica de Slug Único para evitar o erro SQLSTATE[23505]
-        $slug = Str::slug($data['title']);
-        $count = Post::where('slug', 'LIKE', "{$slug}%")->count();
-        $data['slug'] = $count ? "{$slug}-" . ($count + 1) : $slug;
+        // Imagem com nome personalizado (SEO)
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = $data['slug'] . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('posts', $fileName, 'public');
+        }
 
-        // Garante que o autor_id seja o usuário logado se não vier no request
-        $data['author_id'] = auth()->id();
+        $data['author_id'] = $request->user()->id;
 
         $post = Post::create($data);
+        $post->load(['author', 'category']);
 
         return response()->json([
             'message' => 'Post criado com sucesso!',
@@ -69,27 +89,31 @@ class PostController extends Controller
         ], 201);
     }
 
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, $id)
     {
         $this->authorize('criar noticias');
-
+        
+        $post = Post::findOrFail($id);
         $data = $request->validated();
 
+        // Atualiza o slug se o título mudar e não houver slug manual
+        if (empty($data['slug']) && isset($data['title'])) {
+            $data['slug'] = Str::slug($data['title']) . '-' . rand(100, 999);
+        }
+
+        // Atualização da Imagem
         if ($request->hasFile('image')) {
             if ($post->image) {
                 Storage::disk('public')->delete($post->image);
             }
-            $data['image'] = $request->file('image')->store('posts', 'public');
-        }
-
-        // Se o título mudou, atualizamos o slug também
-        if (isset($data['title']) && $data['title'] !== $post->title) {
-            $slug = Str::slug($data['title']);
-            $count = Post::where('slug', 'LIKE', "{$slug}%")->where('id', '!=', $post->id)->count();
-            $data['slug'] = $count ? "{$slug}-" . ($count + 1) : $slug;
+            
+            $file = $request->file('image');
+            $fileName = ($data['slug'] ?? $post->slug) . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs('posts', $fileName, 'public');
         }
 
         $post->update($data);
+        $post->load(['author', 'category']);
 
         return response()->json([
             'message' => 'Notícia atualizada com sucesso!',
@@ -97,9 +121,11 @@ class PostController extends Controller
         ]);
     }
 
-    public function destroy(Post $post)
+    public function destroy($id)
     {
         $this->authorize('criar noticias');
+
+        $post = Post::findOrFail($id);
 
         if ($post->image) {
             Storage::disk('public')->delete($post->image);
@@ -110,5 +136,34 @@ class PostController extends Controller
         return response()->json([
             'message' => 'Notícia removida com sucesso!',
         ]);
+    }
+
+    /**
+ * Notícias Relacionadas (Público)
+ * Busca posts da mesma categoria, excluindo o atual.
+ */
+    public function relacionadas($id)
+    {
+        $post = Post::findOrFail($id);
+
+        $relacionadas = Post::query()
+            ->with(['author', 'category'])
+            ->where('category_id', $post->category_id) // Mesma categoria
+            ->where('id', '!=', $post->id)             // Exclui a notícia atual
+            ->latest()
+            ->limit(3)                                 // Traz apenas as 3 mais recentes
+            ->get();
+
+        return PostResource::collection($relacionadas);
+    }
+
+    public function maisLidas()
+    {
+        $posts = Post::with(['author', 'category'])
+            ->orderBy('views', 'desc')
+            ->limit(5)
+            ->get();
+
+        return PostResource::collection($posts);
     }
 }

@@ -1,25 +1,30 @@
 meta {
   name: Atualizar notícia
   type: http
-  seq: 5
+  seq: 11
 }
 
 post {
-  url: {{site}}/noticia/5
+  url: {{site}}/noticia/15
   body: multipartForm
   auth: bearer
 }
 
+headers {
+  Accept: application/json
+  Content-Type: multipart/form-data
+}
+
 auth:bearer {
-  token: 5|I1bMwt9EbFtnBgI1wRGhe67NBGpeAerb3rwO6PcO79cea649
+  token: 14|tgD0zJ2913AiOm5FZ4ytI7dZXIQocbqKs7guHMvEfd28dd28
 }
 
 body:multipart-form {
   _method: PUT
-  title: Oi, é um subtítulo 8
+  title: Oi, é um subtítulo 2
   content: Oi, é um conteúdo
   category_id: 1
-  author_id: 1
+  author_id: 2
   image: @file(/home/jotahdev/Downloads/00000.jpeg)
 }
 

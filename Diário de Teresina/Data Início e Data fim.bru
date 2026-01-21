@@ -1,17 +1,17 @@
 meta {
-  name: Filtrar por categoria
+  name: Data Início e Data fim
   type: http
-  seq: 3
+  seq: 7
 }
 
 get {
-  url: {{site}}/noticias?categoria=policial
+  url: {{site}}/noticias?data_inicio=2026-01-21
   body: none
   auth: inherit
 }
 
 params:query {
-  categoria: policial
+  data_inicio: 2026-01-21
 }
 
 settings {

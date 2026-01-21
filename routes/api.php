@@ -2,29 +2,42 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
-use App\Http\Resources\CategoryResource;
-use App\Models\Category;
+use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// --- ROTAS PÚBLICAS ---
-// Usamos o Controller para manter as rotas limpas
-Route::get('/categorias', function () {
-    return CategoryResource::collection(Category::all());
-});
+// ====================
+// ROTAS PÚBLICAS
+// ====================
+
+// Categorias
+Route::get('/categorias', [CategoryController::class, 'index']);
+
+// Notícias
 Route::get('/noticias', [PostController::class, 'index']);
-Route::get('/noticia/{post:slug}', [PostController::class, 'show']);
+Route::get('/noticia/{id}', [PostController::class, 'show']);
+Route::get('/noticia/{id}/relacionadas', [PostController::class, 'relacionadas']);
+Route::get('/noticias/mais-lidas', [PostController::class, 'maisLidas']);
+
+// Auth
 Route::post('/login', [AuthController::class, 'login']);
 
-// --- ROTAS PROTEGIDAS ---
+// ====================
+// ROTAS PROTEGIDAS (Admin)
+// ====================
 Route::middleware('auth:sanctum')->group(function () {
+
+    // --- Notícias ---
     Route::post('/noticia', [PostController::class, 'store']);
+    Route::match(['post', 'put'], '/noticia/{id}', [PostController::class, 'update']);
+    Route::delete('/noticia/{id}', [PostController::class, 'destroy']);
 
-    // DICA: Se for enviar IMAGEM no update, use POST com _method=PUT
-    Route::match(['post', 'put'], '/noticia/{post}', [PostController::class, 'update']);
+    // --- Categorias ---
+    Route::post('/categoria', [CategoryController::class, 'store']);
+    Route::match(['post', 'put'], '/categoria/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categoria/{id}', [CategoryController::class, 'destroy']);
 
-    Route::delete('/noticia/{post}', [PostController::class, 'destroy']);
-
+    // --- Perfil e Permissões ---
     Route::get('/me', function (Request $request) {
         return response()->json([
             'user' => $request->user(),

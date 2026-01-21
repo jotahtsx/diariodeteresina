@@ -1,0 +1,16 @@
+meta {
+  name: Listar notícia
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{site}}/noticia/19
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

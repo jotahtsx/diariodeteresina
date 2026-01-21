@@ -15,28 +15,23 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'titulo' => $this->title,
-            'slug' => $this->slug,
-            'conteudo' => $this->content,
-            'imagem' => $this->image ? asset('storage/' . $this->image) : null,
-            'categoria' => $this->category->name ?? 'Geral',
-            'autor' => [
-                'nome' => $this->author->name ?? 'Redação',
-                'localizacao' => ($this->author->city ?? 'Teresina').'/'.($this->author->state ?? 'PI'),
+            'id'             => $this->id,
+            'titulo'         => $this->title,
+            'slug'           => $this->slug,
+            'conteudo'       => $this->content,
+            'imagem'         => $this->image ? asset('storage/' . $this->image) : null,
+            'visualizacoes'  => $this->views ?? 0, // Adicionado para o contador de lidas
+            'categoria'      => optional($this->category)->name ?? 'Geral',
+            'categoria_cor'  => optional($this->category)->color ?? '#333333', // Cor para o design
+            'autor'          => [
+                'nome'        => $this->author?->name ?? 'Redação',
+                'localizacao' => ($this->author?->city ?? 'Teresina') . '/' . ($this->author?->state ?? 'PI'),
             ],
-            'publicado_em' => $this->created_at->format('d/m/Y H:i'),
+            'publicado_em'   => $this->created_at->format('d/m/Y H:i'),
             'links_externos' => [
-                'instagram' => $this->instagram_post_url,
-                'telegram' => $this->telegram_message_id,
+                'instagram' => $this->instagram_url, // Corrigido para bater com o seu Model
+                'telegram'  => $this->telegram_message_id,
             ],
-            // Carrega as relacionadas apenas se você quiser (evita lentidão)
-            'relacionadas' => $this->when($request->routeIs('*.show'), function () {
-                return \App\Models\Post::where('category_id', $this->category_id)
-                    ->where('id', '!=', $this->id)
-                    ->limit(3)
-                    ->get(['id', 'title', 'slug']);
-            }),
         ];
     }
 }

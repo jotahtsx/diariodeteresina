@@ -1,7 +1,7 @@
 meta {
   name: Cadastrando Notícia
   type: http
-  seq: 4
+  seq: 10
 }
 
 post {
@@ -12,10 +12,11 @@ post {
 
 headers {
   Accept: application/json
+  Content-Type: multipart/form-data
 }
 
 auth:bearer {
-  token: 5|I1bMwt9EbFtnBgI1wRGhe67NBGpeAerb3rwO6PcO79cea649
+  token: 13|TuHAwDUv9fZLgGKlhaP9rNjNIudz6bJ3E4DUs0Cf25497848
 }
 
 body:json {
@@ -28,9 +29,9 @@ body:json {
 }
 
 body:multipart-form {
-  title: Teresina registra recorde de arborização em 2027
-  content: prefeitura de Teresina anunciou hoje novos dados sobre o plantio de mudas...
-  image: @file(/home/jotahdev/Downloads/00000.jpeg)
+  title: a postagem 3 @contentType(text)
+  content: prefeitura de Teresina anunciou hoje novos dados sobre o plantio de mudas... @contentType(text)
+  image: @file(/home/jotahdev/Downloads/00000.jpeg) @contentType(text)
   author_id: 1
   category_id: 2
 }

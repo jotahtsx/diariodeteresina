@@ -1,17 +1,17 @@
 meta {
-  name: Filtrar por categoria
+  name: Notícia de Destaque
   type: http
-  seq: 3
+  seq: 6
 }
 
 get {
-  url: {{site}}/noticias?categoria=policial
+  url: {{site}}/noticias?destaque=1
   body: none
   auth: inherit
 }
 
 params:query {
-  categoria: policial
+  destaque: 1
 }
 
 settings {
