@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Models\Category;
 
 class Post extends Model
 {
@@ -22,7 +20,7 @@ class Post extends Model
         'image',
         'instagram_url',
         'telegram_message_id',
-        'views'
+        'views',
     ];
 
     /**

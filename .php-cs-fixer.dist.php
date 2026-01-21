@@ -1,11 +1,9 @@
 <?php
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
 
-if (! class_exists('PhpCsFixer\Config')) {
-    class_exists('Symfony\Component\Finder\Finder');
-}
-
-$finder = Symfony\Component\Finder\Finder::create()
+$finder = Finder::create()
     ->in([
         __DIR__ . '/app',
         __DIR__ . '/config',
@@ -19,7 +17,7 @@ $finder = Symfony\Component\Finder\Finder::create()
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-return (new PhpCsFixer\Config())
+return (new Config())
     ->setRules([
         '@PSR12' => true,
         'array_syntax' => ['syntax' => 'short'],
