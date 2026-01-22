@@ -47,113 +47,109 @@
     {{-- 3. Notícia de Destaque Centralizada --}}
     <section class="mb-20 mt-12 flex justify-center px-4">
         <div class="max-w-4xl w-full flex flex-col items-center text-center group cursor-pointer">
-            {{-- Categoria --}}
+            {{-- Categoria com Hover Cinza Escuro --}}
             <div class="mb-6">
                 <span
-                    class="bg-slate-100 text-slate-500 font-mono font-black text-[11px] uppercase tracking-[0.3em] px-5 py-2 rounded-full group-hover:bg-[#EA2027] group-hover:text-white transition-all duration-300 shadow-sm">
+                    class="bg-slate-100 text-slate-500 font-mono font-black text-[11px] uppercase tracking-[0.3em] px-5 py-2 rounded-full group-hover:bg-slate-800 group-hover:text-white transition-all duration-300 shadow-sm">
                     Polícia
                 </span>
             </div>
 
-            {{-- Manchete --}}
+            {{-- Manchete com Hover Cinza Escuro --}}
             <a href="#" class="block px-2">
                 <h2
-                    class="text-3xl md:text-5xl lg:text-6xl font-[900] text-slate-900 leading-[1.05] tracking-tighter group-hover:text-[#EA2027] transition-colors duration-300">
+                    class="text-3xl md:text-5xl lg:text-6xl font-[900] text-slate-900 leading-[1.05] tracking-tighter group-hover:text-slate-700 transition-colors duration-300">
                     Polícia Civil indicia funcionários da Cacique Pneus por furto
                 </h2>
             </a>
 
-            {{-- Detalhe Decorativo --}}
+            {{-- Detalhe Decorativo em Cinza --}}
             <div class="mt-10">
                 <div
-                    class="w-20 h-1.5 bg-slate-200 rounded-full group-hover:w-32 group-hover:bg-[#EA2027] transition-all duration-500">
+                    class="w-20 h-1.5 bg-slate-200 rounded-full group-hover:w-32 group-hover:bg-slate-800 transition-all duration-500">
                 </div>
             </div>
         </div>
     </section>
 
+    {{-- Grid de Notícias - Estilo High-Impact --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 
-            {{-- NOTÍCIA GRANDE (Ocupa 2 colunas no Desktop) --}}
-            <div class="lg:col-span-2 group cursor-pointer">
-                <div class="relative overflow-hidden mb-4" style="border-radius: 25px;">
-                    {{-- Placeholder da Imagem Grande --}}
-                    <div
-                        class="aspect-video bg-slate-200 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
-                        <i class="fa-regular fa-image text-slate-400 text-5xl"></i>
-                    </div>
-                    {{-- Badge de Categoria Flutuante --}}
-                    <span
-                        class="absolute top-4 left-4 bg-[#EA2027] text-white font-mono font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
-                        Destaque
-                    </span>
+            {{-- COLUNA ESQUERDA (Notícia Vertical) --}}
+            <div class="group cursor-pointer flex flex-col border-b border-slate-100 pb-6">
+                {{-- Categoria + Ícone (Igual à imagem) --}}
+                <div class="flex items-center space-x-2 mb-3">
+                    <span class="text-[12px] font-bold text-sky-500 hover:underline">Novo cargo</span>
+                    <i class="fa-solid fa-share-nodes text-sky-500 text-[10px]"></i>
                 </div>
-                <h3
-                    class="text-2xl md:text-3xl font-[900] text-slate-900 leading-tight tracking-tighter group-hover:text-[#EA2027] transition-colors">
-                    Título da Notícia Principal com Imagem Grande Ocupando Duas Colunas
-                </h3>
-                <p class="mt-3 text-slate-500 line-clamp-2 text-sm md:text-base">
-                    Aqui vai um breve resumo da notícia para instigar o clique, mantendo a elegância e o estilo soft do
-                    Diário de Teresina.
+
+                {{-- Imagem Vertical (Aspect Ratio 3/4 ou similar) --}}
+                <div class="relative overflow-hidden mb-5 flex-grow" style="border-radius: 12px;">
+                    <div
+                        class="w-full h-full bg-slate-200 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center min-h-[500px]">
+                        <i class="fa-regular fa-image text-slate-400 text-6xl"></i>
+                    </div>
+                </div>
+
+                <h2
+                    class="text-2xl md:text-3xl font-[900] text-slate-900 leading-tight tracking-tight group-hover:text-slate-700">
+                    Chico Lucas é confirmado como Secretário Nacional de Segurança
+                </h2>
+                <p class="mt-2 text-slate-500 text-sm leading-relaxed">
+                    A indicação foi feita pelo Conselho Nacional de Secretários de Segurança Pública.
                 </p>
             </div>
 
-            {{-- COLUNA LATERAL (2 Notícias Menores) --}}
-            <div class="flex flex-col gap-8">
+            {{-- COLUNA DIREITA (Duas Notícias Empilhadas) --}}
+            <div class="flex flex-col justify-between">
 
-                {{-- Notícia Menor 1 --}}
-                <div class="group cursor-pointer">
-                    <div class="relative overflow-hidden mb-3" style="border-radius: 20px;">
+                {{-- Notícia Topo Direita --}}
+                <div class="group cursor-pointer flex flex-col border-b border-slate-100 pb-6 mb-6">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <span class="text-[12px] font-bold text-sky-500">Entrevista</span>
+                        <i class="fa-solid fa-share-nodes text-sky-500 text-[10px]"></i>
+                    </div>
+                    <div class="relative overflow-hidden mb-4 h-[240px]" style="border-radius: 12px;">
                         <div
-                            class="aspect-[16/9] bg-slate-200 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
-                            <i class="fa-regular fa-image text-slate-400 text-3xl"></i>
+                            class="w-full h-full bg-slate-200 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
+                            <i class="fa-regular fa-image text-slate-400 text-4xl"></i>
                         </div>
                     </div>
-                    <h4
-                        class="text-lg font-bold text-slate-800 leading-snug tracking-tight group-hover:text-[#EA2027] transition-colors line-clamp-2">
-                        Título da notícia secundária número um com imagem
-                    </h4>
+                    <h3 class="text-xl font-bold text-slate-800 leading-tight group-hover:text-slate-700">
+                        DHPP concluiu 114 inquéritos com indiciamento em 2025, diz delegado
+                    </h3>
+                    <div class="flex items-center mt-2 space-x-1">
+                        <span class="w-1.5 h-1.5 bg-sky-500 rounded-full"></span>
+                        <p class="text-xs text-slate-500">Polícia Civil indicia funcionários da Cacique Pneus por furto</p>
+                    </div>
                 </div>
 
-                {{-- Notícia Menor 2 --}}
-                <div class="group cursor-pointer">
-                    <div class="relative overflow-hidden mb-3" style="border-radius: 20px;">
+                {{-- Notícia Base Direita --}}
+                <div class="group cursor-pointer flex flex-col border-b border-slate-100 pb-6">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <span class="text-[12px] font-bold text-sky-500">Instrução</span>
+                        <i class="fa-solid fa-share-nodes text-sky-500 text-[10px]"></i>
+                    </div>
+                    <div class="relative overflow-hidden mb-4 h-[240px]" style="border-radius: 12px;">
                         <div
-                            class="aspect-[16/9] bg-slate-200 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
-                            <i class="fa-regular fa-image text-slate-400 text-3xl"></i>
+                            class="w-full h-full bg-slate-200 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center">
+                            <i class="fa-regular fa-image text-slate-400 text-4xl"></i>
                         </div>
                     </div>
-                    <h4
-                        class="text-lg font-bold text-slate-800 leading-snug tracking-tight group-hover:text-[#EA2027] transition-colors line-clamp-2">
-                        Segunda notícia da lateral com o mesmo padrão visual
-                    </h4>
+                    <h3 class="text-xl font-bold text-slate-800 leading-tight group-hover:text-slate-700">
+                        Justiça marca audiência do acusado de matar filho de vice-prefeito
+                    </h3>
+                    <p class="mt-2 text-xs text-slate-500">
+                        A sessão para ouvir o réu, testemunhas, defesa e acusação foi agendada para 26 de março de 2026.
+                    </p>
                 </div>
 
             </div>
         </div>
     </div>
 
-    {{-- 4. Listagem de Notícias --}}
-    <div class="max-w-6xl mx-auto px-4 mb-10">
-        <h3 class="text-xl font-[900] text-slate-800 mb-8 tracking-tighter uppercase flex items-center">
-            <span class="w-2 h-6 bg-[#EA2027] mr-3 rounded-full"></span>
-            Mais Notícias
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            @foreach ($posts as $post)
-                <div
-                    class="p-6 bg-white border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all cursor-pointer rounded-[25px]">
-                    <p class="text-slate-700 font-bold text-lg leading-tight group-hover:text-[#EA2027]">
-                        {{ $post->title }}
-                    </p>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    {{-- CSS de Animação --}}
+    {{-- Estilos de Animação mantidos --}}
     <style>
         @keyframes pulse-fast {
 
