@@ -77,20 +77,21 @@
 </header>
 
 <div class="w-full bg-white border-b border-gray-100 shadow-sm">
-    <div class="container mx-auto px-4 h-12 flex items-center gap-6">
+    {{-- Aumentado de h-12 para h-16 (+16px de respiro total) --}}
+    <div class="container mx-auto px-4 h-16 flex items-center justify-between gap-6">
 
-        {{-- CATEGORIAS --}}
+        {{-- CATEGORIAS (Esquerda) --}}
         <nav id="categories-list"
-            class="flex items-center space-x-6 overflow-x-auto no-scrollbar py-2
+            class="flex items-center space-x-8 overflow-x-auto no-scrollbar py-2
                    scroll-smooth cursor-grab active:cursor-grabbing">
 
             @isset($categories)
                 @foreach ($categories as $cat)
                     <a href="{{ route('site.categoria', $cat->slug) }}"
                         class="text-gray-600 hover:text-[#EA2027]
-                               font-semibold text-[13px] transition-all
-                               hover:-translate-y-[1px] whitespace-nowrap">
-                        {{ strtoupper($cat->name) }}
+                               font-bold text-[14px] transition-all
+                               hover:-translate-y-[1px] whitespace-nowrap uppercase tracking-tight">
+                        {{ $cat->name }}
                     </a>
                 @endforeach
             @else
@@ -99,6 +100,26 @@
                 </span>
             @endisset
         </nav>
+
+        {{-- WHATSAPP ESTRATÉGICO (Direita) --}}
+        <a href="https://wa.me/5586994173636" target="_blank" class="hidden lg:flex items-center group transition-all">
+
+            {{-- Aumentado o padding (py-2.5 px-6) e o arredondamento --}}
+            <div
+                class="flex items-center bg-[#2ecc71]/10 group-hover:bg-[#2ecc71]/20 py-2.5 px-6 rounded-[25px] border border-[#2ecc71]/20 transition-all shadow-sm group-hover:shadow-md">
+                {{-- Ícone WhatsApp maior --}}
+                <i class="fa-brands fa-whatsapp text-[#2ecc71] text-xl mr-3"></i>
+
+                <div class="flex flex-col leading-tight">
+                    <span class="text-[#2ecc71] text-[10px] font-[900] uppercase tracking-wider">Sugestões</span>
+                    <span
+                        class="text-gray-800 text-[15px] font-bold font-mono tracking-tighter group-hover:text-black transition-colors">
+                        86 99417-3636
+                    </span>
+                </div>
+            </div>
+        </a>
+
     </div>
 </div>
 
