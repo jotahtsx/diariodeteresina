@@ -34,7 +34,7 @@
                 <div class="h-px bg-slate-200 grow opacity-50"></div>
             </div>
 
-            <div style="max-width: 970px;"
+            <div style="max-width: 970px; min-height: 90px;"
                 class="w-full aspect-970/90 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-xl">
 
                 @if (isset($adHeader))
@@ -277,7 +277,8 @@
                 </span>
                 <div class="h-px bg-slate-800 grow"></div>
             </div>
-            <div style="max-width: 970px;"
+
+            <div style="max-width: 970px; min-height: 90px;"
                 class="w-full aspect-970/90 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-2xl">
 
                 @if (isset($adFooter))
@@ -285,7 +286,6 @@
                         {!! $adFooter->code !!}
                     </div>
                 @else
-                    {{-- Placeholder Dark --}}
                     <div class="flex items-center gap-6 px-8 text-slate-500 group-hover:text-slate-300 transition-colors">
                         <div class="hidden md:block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 opacity-20" fill="none"
@@ -303,7 +303,6 @@
                         </div>
                     </div>
                 @endif
-
             </div>
         </div>
     </section>
