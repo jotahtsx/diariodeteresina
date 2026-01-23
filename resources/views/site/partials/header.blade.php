@@ -13,16 +13,13 @@
 
         <div class="flex-none">
             <a href="{{ route('site.home') }}">
-                <h1 class="text-2xl md:text-3xl font-[900] tracking-tighter text-white leading-none">
-                    Diário de <span class="opacity-90">Teresina</span>
+                <h1 class="text-2xl md:text-3xl font-black tracking-tighter text-white leading-none">
+                    Diário de Teresina
                 </h1>
             </a>
         </div>
 
-        {{-- DIREITA: Busca --}}
         <div class="flex-1 hidden md:flex justify-end items-center gap-4">
-
-            {{-- SEARCH --}}
             <div class="relative w-64 group">
                 <input type="text" placeholder="Buscar notícias..."
                     class="w-full bg-white/10 hover:bg-white/20 focus:bg-white/20
@@ -77,41 +74,47 @@
 </header>
 
 <div class="w-full bg-white border-b border-gray-100 shadow-sm">
-    {{-- Aumentado de h-12 para h-16 (+16px de respiro total) --}}
     <div class="container mx-auto px-4 h-16 flex items-center justify-between gap-6">
-
-        {{-- CATEGORIAS (Esquerda) --}}
         <nav id="categories-list"
             class="flex items-center space-x-8 overflow-x-auto no-scrollbar py-2
-                   scroll-smooth cursor-grab active:cursor-grabbing">
+           scroll-smooth cursor-grab active:cursor-grabbing">
+            <a href="{{ route('site.home') }}"
+                class="text-gray-900 hover:text-[#EA2027] font-extrabold text-[14px] transition-all whitespace-nowrap uppercase tracking-tight">
+                Últimas
+            </a>
 
             @isset($categories)
                 @foreach ($categories as $cat)
                     <a href="{{ route('site.categoria', $cat->slug) }}"
-                        class="text-gray-600 hover:text-[#EA2027]
-                               font-bold text-[14px] transition-all
-                               hover:-translate-y-[1px] whitespace-nowrap uppercase tracking-tight">
+                        class="relative text-gray-600 hover:text-[#EA2027]
+                       font-bold text-[14px] transition-all
+                       hover:-translate-y-px whitespace-nowrap uppercase tracking-tight flex items-center gap-1.5">
+
                         {{ $cat->name }}
+
+                        @if ($cat->name == 'Esportes' && isset($hasLiveGames) && $hasLiveGames)
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2ecc71] opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-[#2ecc71]"></span>
+                            </span>
+                        @endif
                     </a>
                 @endforeach
-            @else
-                <span class="text-gray-300 text-[11px] font-bold animate-pulse uppercase tracking-widest">
-                    Carregando...
-                </span>
             @endisset
         </nav>
 
-        {{-- WHATSAPP ESTRATÉGICO (Direita) --}}
         <a href="https://wa.me/5586994173636" target="_blank" class="hidden lg:flex items-center group transition-all">
 
-            {{-- Aumentado o padding (py-2.5 px-6) e o arredondamento --}}
             <div
                 class="flex items-center bg-[#2ecc71]/10 group-hover:bg-[#2ecc71]/20 py-2.5 px-6 rounded-[25px] border border-[#2ecc71]/20 transition-all shadow-sm group-hover:shadow-md">
-                {{-- Ícone WhatsApp maior --}}
+                {{-- Ícone WhatsApp --}}
                 <i class="fa-brands fa-whatsapp text-[#2ecc71] text-xl mr-3"></i>
 
                 <div class="flex flex-col leading-tight">
-                    <span class="text-[#2ecc71] text-[10px] font-[900] uppercase tracking-wider">Sugestões</span>
+                    <span class="text-[#2ecc71] text-[10px] font-black uppercase tracking-wider">
+                        Sugestões
+                    </span>
                     <span
                         class="text-gray-800 text-[15px] font-bold font-mono tracking-tighter group-hover:text-black transition-colors">
                         86 99417-3636

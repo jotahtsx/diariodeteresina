@@ -1,46 +1,13 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Post;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| HOME
-|--------------------------------------------------------------------------
-*/
-Route::get('/', function () {
-    $posts = Post::with(['author', 'category'])
-        ->latest()
-        ->paginate(9);
+// Home
+Route::get('/', [HomeController::class, 'index'])->name('site.home');
 
-    return view('site.home', compact('posts'));
-})->name('site.home');
+// Notícia Individual
+Route::get('/noticia/{post:slug}', [HomeController::class, 'showPost'])->name('site.post');
 
-/*
-|--------------------------------------------------------------------------
-| POSTS
-|--------------------------------------------------------------------------
-*/
-Route::get('/noticia/{post:slug}', function (Post $post) {
-    $post->load(['author', 'category']);
-
-    return view('site.posts.post', compact('post'));
-})->name('site.post');
-
-/*
-|--------------------------------------------------------------------------
-| CATEGORIAS
-|--------------------------------------------------------------------------
-*/
-Route::get('/categoria/{category:slug}', function (Category $category) {
-
-    // carrega os posts da categoria
-    $posts = Post::with(['author', 'category'])
-        ->where('category_id', $category->id)
-        ->latest()
-        ->paginate(9);
-
-    return view('site.category.index', compact('category', 'posts'));
-
-})->name('site.categoria');
+// Categorias
+Route::get('/categoria/{category:slug}', [HomeController::class, 'showCategory'])->name('site.categoria');
