@@ -244,6 +244,43 @@
         </div>
     </div>
 
+    <div class="max-w-6xl mx-auto px-4 mb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+            {{-- PUB --}}
+            <div class="group flex flex-col h-full bg-slate-50 border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all"
+                style="border-radius: 18px;">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Publicidade</span>
+                <div class="grow flex flex-col justify-center items-center text-center space-y-4">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100">
+                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i></div>
+                    <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">Anuncie Aqui</h4>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-200 text-center">
+                    <a href="#"
+                        class="block w-full py-2 bg-white border border-slate-200 rounded-lg text-[10px] font-black uppercase text-slate-600 group-hover:bg-slate-800 group-hover:text-white transition-all">Ver
+                        Planos</a>
+                </div>
+            </div>
+            {{-- 3 NEWS --}}
+            @foreach ($postsRestante->skip(2)->take(3) as $item)
+                <div class="group flex flex-col border-b border-slate-100 pb-4">
+                    <div class="mb-3">
+                        <span style="color: {{ $item->category->color ?? '#000' }};"
+                            class="text-[18px] font-black tracking-tight">{{ $item->category->name }}</span>
+                    </div>
+                    <a href="{{ route('site.post', $item->slug) }}" class="relative overflow-hidden mb-4 block"
+                        style="border-radius: 18px; height: 200px;">
+                        <img src="{{ $item->image }}"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </a>
+                    <h3 class="text-lg font-black text-slate-800 group-hover:text-slate-700 line-clamp-3">
+                        <a href="{{ route('site.post', $item->slug) }}">{{ $item->title }}</a>
+                    </h3>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     <section class="max-w-7xl mx-auto px-4 mb-14 mt-12">
         <div class="flex flex-col items-center">
             {{-- Header do Banner Dark --}}
@@ -287,7 +324,6 @@
             </div>
         </div>
     </section>
-
 
 
     <style>
