@@ -23,7 +23,9 @@ class Post extends Model
         'telegram_message_id',
         'views',
         'is_featured',
-        'status', // <--- Faltava este carinha aqui!
+        'state_id',
+        'city_id',
+        'status',
     ];
 
     protected static function booted()
@@ -49,5 +51,21 @@ class Post extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+ * Cidade da notícia
+ */
+    public function city(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    /**
+     * Estado da notícia
+     */
+    public function state(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(State::class);
     }
 }

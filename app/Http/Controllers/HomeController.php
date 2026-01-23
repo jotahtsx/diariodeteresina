@@ -9,14 +9,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // 1. Pega o Destaque (Prioriza is_featured, senão pega o último publicado)
-        $postDestaque = Post::with('category')
-            ->where('status', 'published')
-            ->where('is_featured', true)
-            ->latest()
-            ->first()
-            ??
-            Post::with('category')
+        // 1. Destaque
+        $postDestaque = Post::with(['category', 'city'])
             ->where('status', 'published')
             ->latest()
             ->first();
@@ -25,28 +19,53 @@ class HomeController extends Controller
             return view('site.home');
         }
 
-        // 2. Pegamos os 3 principais seguintes (excluindo o destaque)
-        $postsPrincipais = Post::with('category')
+        // 2. Principais (3)
+        $postsPrincipais = Post::with(['category', 'city'])
             ->where('status', 'published')
             ->where('id', '!=', $postDestaque->id)
             ->latest()
             ->take(3)
             ->get();
 
-        // 3. Pegamos os IDs para não repetir notícias
         $idsUsados = array_merge([$postDestaque->id], $postsPrincipais->pluck('id')->toArray());
 
-        // 4. Pegamos o restante das notícias
-        $postsRestante = Post::with('category')
+        // 3. Notícias das Cidades (4)
+        $postsCidades = Post::with(['category', 'city'])
+            ->where('status', 'published')
+            ->whereNotNull('city_id')
+            ->whereNotIn('id', $idsUsados)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $idsUsados = array_merge($idsUsados, $postsCidades->pluck('id')->toArray());
+
+        // 4. Restante das notícias
+        $postsRestante = Post::with(['category', 'city'])
             ->where('status', 'published')
             ->whereNotIn('id', $idsUsados)
             ->latest()
             ->take(14)
             ->get();
 
-        $hasLiveGames = true;
+        // --- BUSCA DOS BANNERS (O QUE ESTAVA FALTANDO) ---
+        // Aqui assumimos que sua tabela 'top_banners' tem uma coluna 'position' ou similar.
+        // Se não tiver, buscamos os dois primeiros disponíveis como teste:
+        $banners = \App\Models\TopBanner::all();
+        $adHeader = $banners->where('position', 'header')->first();
+        $adFooter = $banners->where('position', 'footer')->first();
 
-        return view('site.home', compact('postDestaque', 'postsPrincipais', 'postsRestante', 'hasLiveGames'));
+        $hasLiveGames = false;
+
+        return view('site.home', compact(
+            'postDestaque',
+            'postsPrincipais',
+            'postsCidades',
+            'postsRestante',
+            'adHeader',
+            'adFooter',
+            'hasLiveGames'
+        ));
     }
 
     public function showPost(Post $post)

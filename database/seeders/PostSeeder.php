@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Author;
 use App\Models\Category;
-use App\Models\Post; // Verifique se este Model existe
+use App\Models\City;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -14,18 +15,26 @@ class PostSeeder extends Seeder
     {
         $categories = Category::all();
         $authors = Author::all();
+        $cities = City::all();
 
-        // Se por algum motivo não houver autores, vamos criar um rápido para não quebrar
-        if ($authors->isEmpty()) {
-            $authors = collect([Author::create(['name' => 'Redação Oracle'])]);
+        // Se não houver cidades, o seeder para aqui com um aviso
+        if ($cities->isEmpty()) {
+            $this->command->warn("Nenhuma cidade encontrada. Rode o CitySeeder antes!");
+
+            return;
         }
 
         for ($i = 1; $i <= 60; $i++) {
             $title = fake()->sentence(rand(6, 10));
 
+            // Sorteia uma cidade das 5 que você tem no banco
+            $city = $cities->random();
+
             Post::create([
-                'author_id' => $authors->random()->id, // O segredo está aqui
+                'author_id' => $authors->random()->id,
                 'category_id' => $categories->random()->id,
+                'city_id' => $city->id, // <--- Aqui está o segredo
+                'state_id' => $city->state_id,
                 'title' => $title,
                 'slug' => Str::slug($title) . '-' . uniqid(),
                 'content' => fake()->paragraphs(8, true),
@@ -36,5 +45,7 @@ class PostSeeder extends Seeder
                 'status' => 'published',
             ]);
         }
+
+        $this->command->info("60 posts criados com sucesso com cidades vinculadas!");
     }
 }

@@ -27,19 +27,47 @@
     @endif
 
     {{-- 2. BANNER PUBLICIDADE TOPO --}}
-    <div class="mb-12 flex justify-center px-4">
-        <div class="w-full" style="max-width: 970px;">
-            <div style="height: 90px; border-radius: 15px;"
-                class="w-full bg-[#1E293B] border border-slate-700 flex items-center justify-between px-10 group hover:bg-[#0F172A] transition-all duration-500 shadow-xl overflow-hidden">
-                <span
-                    class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 group-hover:text-slate-400 transition-colors">Publicidade</span>
-                <span
-                    class="text-white/20 group-hover:text-white/60 font-bold text-sm font-mono tracking-tighter transition-all">970
-                    x 90</span>
-                <i class="fa-solid fa-circle-info text-slate-500 group-hover:text-white transition-colors text-xs"></i>
+    <section class="max-w-7xl mx-auto px-4 mb-10 mt-6">
+        <div class="flex flex-col items-center">
+            {{-- Identificação Soft --}}
+            <div class="flex items-center gap-4 mb-3 w-full max-w-[970px]">
+                <span class="text-[9px] text-slate-500 uppercase tracking-[0.3em] font-bold whitespace-nowrap">
+                    Espaço Publicitário
+                </span>
+                <div class="h-px bg-slate-200 flex-grow opacity-50"></div>
+            </div>
+
+            {{-- Container Dark Premium --}}
+            <div
+                class="w-full max-w-[970px] aspect-[970/90] bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-xl">
+
+                @if (isset($adHeader))
+                    {{-- Código do Anunciante vindo do banco --}}
+                    <div class="w-full h-full">
+                        {!! $adHeader->code !!}
+                    </div>
+                @else
+                    {{-- Placeholder quando não há anúncio no topo --}}
+                    <div
+                        class="flex items-center gap-6 px-8 text-slate-500 group-hover:text-slate-300 transition-colors cursor-pointer">
+                        <div class="hidden md:block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 opacity-20" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col text-center md:text-left">
+                            <span class="text-[11px] font-bold tracking-widest uppercase">Anuncie sua marca aqui</span>
+                            <span class="text-[9px] opacity-40 tracking-normal font-medium mt-0.5 uppercase">
+                                Posicionamento de Topo — Audiência Qualificada
+                            </span>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
-    </div>
+    </section>
 
     {{-- 3. NOTÍCIA DE DESTAQUE DINÂMICA --}}
     @if (isset($postDestaque))
@@ -178,42 +206,58 @@
         </div>
     </div>
 
-    {{-- 7. BLOCO CIDADES --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="flex items-center justify-between mb-8 border-b-2 border-slate-900 pb-4">
             <h2 class="text-xl font-black uppercase tracking-tighter text-slate-800">Notícias das Cidades</h2>
         </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
-            @foreach ($postsRestante->skip(10)->take(4) as $c)
+            @foreach ($postsCidades as $c)
                 <div class="group flex flex-col border-b border-slate-100 pb-6">
-                    <div class="mb-3">
-                        <span style="color: {{ $c->category->color ?? '#000' }};"
-                            class="text-[18px] font-black tracking-tight">{{ $c->category->name }}</span>
+                    <div class="mb-3 flex items-center gap-2">
+                        <span
+                            class="bg-slate-900 text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                            {{ $c->city->name }}
+                        </span>
+                        <span style="color: {{ $c->category->color ?? '#64748b' }};"
+                            class="text-[11px] font-black uppercase tracking-tight">
+                            {{ $c->category->name }}
+                        </span>
                     </div>
-                    <a href="{{ route('site.post', $c->slug) }}" class="relative overflow-hidden mb-4 block"
-                        style="border-radius: 18px; height: 180px;">
+
+                    <a href="{{ route('site.post', $c->slug) }}" class="relative overflow-hidden mb-4 block shadow-sm"
+                        style="border-radius: 12px; height: 160px;">
                         <img src="{{ $c->image }}"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     </a>
-                    <h2 class="text-base font-black text-slate-900 group-hover:text-slate-700 line-clamp-2">
+
+                    <h2
+                        class="text-base font-black text-slate-900 group-hover:text-blue-600 line-clamp-2 leading-tight transition-colors">
                         <a href="{{ route('site.post', $c->slug) }}">{{ $c->title }}</a>
                     </h2>
-                    <p class="mt-2 text-slate-500 text-xs line-clamp-2">{{ Str::limit($c->content, 80) }}</p>
+
+                    <p class="mt-2 text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                        {{ Str::limit($c->content, 90) }}
+                    </p>
                 </div>
             @endforeach
         </div>
     </div>
 
-    <section class="max-w-7xl mx-auto px-4 mb-14 mt-8">
+    <section class="max-w-7xl mx-auto px-4 mb-14 mt-12">
         <div class="flex flex-col items-center">
-            <div class="flex items-center gap-4 mb-3 w-full max-w-[970px]">
-                <span class="text-[9px] text-slate-500 uppercase tracking-[0.4em] font-bold whitespace-nowrap">Espaço
-                    Publicitário</span>
-                <div class="h-[1px] bg-slate-800 flex-grow"></div>
+            {{-- Header do Banner Dark --}}
+            <div class="flex items-center gap-4 mb-4 w-full max-w-[970px]">
+                <span class="text-[9px] text-slate-500 uppercase tracking-[0.3em] font-bold whitespace-nowrap">
+                    Espaço Publicitário
+                </span>
+                {{-- Linha discreta para o modo dark --}}
+                <div class="h-px bg-slate-800 flex-grow"></div>
             </div>
 
+            {{-- Container do Banner Estilo Dark --}}
             <div
-                class="w-full max-w-[970px] aspect-[970/90] bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden shadow-2xl transition-all hover:border-amber-500/30 group">
+                class="w-full max-w-[970px] aspect-[970/90] bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-2xl">
 
                 @if (isset($adFooter))
                     {{-- Código do Anunciante --}}
@@ -221,18 +265,21 @@
                         {!! $adFooter->code !!}
                     </div>
                 @else
+                    {{-- Placeholder Dark --}}
                     <div class="flex items-center gap-6 px-8 text-slate-500 group-hover:text-slate-300 transition-colors">
                         <div class="hidden md:block">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 opacity-20" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 opacity-20" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                             </svg>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-[12px] font-semibold tracking-widest uppercase">Anuncie aqui sua marca</span>
-                            <span class="text-[10px] opacity-50 tracking-normal font-light">Formato Premium 970x90 — Entre
-                                em contato com o comercial</span>
+                            <span class="text-[11px] font-bold tracking-widest uppercase">Anuncie no Diário de
+                                Teresina</span>
+                            <span class="text-[9px] opacity-40 tracking-normal font-medium mt-0.5 uppercase">
+                                Formato Premium 970x90 — Comercial
+                            </span>
                         </div>
                     </div>
                 @endif
