@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -30,19 +31,21 @@ class Post extends Model
 
     protected static function booted()
     {
+        // Gera o Slug automaticamente
         static::creating(function (Post $post) {
             if (empty($post->slug)) {
-                $slug = Str::slug($post->title);
-                // Usando uniqid para garantir que slugs em latim repetidos não quebrem o seeder
-                $post->slug = $slug . '-' . uniqid();
+                $post->slug = Str::slug($post->title) . '-' . uniqid();
+            }
+        });
+
+        // Limpa a imagem do disco ao deletar o Post (Soft & Clean)
+        static::deleting(function (Post $post) {
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
             }
         });
     }
 
-    /**
-     * IMPORTANTE: Sua migration criou a tabela 'authors'.
-     * Verifique se a relação é com o Model Author ou User.
-     */
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class, 'author_id');
@@ -53,18 +56,12 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    /**
- * Cidade da notícia
- */
-    public function city(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }
 
-    /**
-     * Estado da notícia
-     */
-    public function state(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
