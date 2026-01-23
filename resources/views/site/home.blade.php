@@ -45,26 +45,38 @@
     </div>
 
     {{-- 3. NOTÍCIA DE DESTAQUE CENTRALIZADA --}}
-    <section class="mb-20 mt-12 flex justify-center px-4">
+    <section class="mb-14 mt-10 flex justify-center px-4">
         <div class="max-w-4xl w-full flex flex-col items-center text-center group cursor-pointer">
-            <div class="mb-6 flex items-center gap-3">
+
+            {{-- Badge Dark --}}
+            <div class="mb-5 flex items-center gap-4">
                 <span
-                    class="bg-slate-100 text-slate-800 font-black text-[18px] px-6 py-2 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 shadow-sm border border-slate-200/50">
+                    class="bg-slate-950 text-white font-black text-[11px] px-3 py-1.5 uppercase tracking-[0.2em] border-l-4 border-red-700">
                     Polícia
                 </span>
-                <i class="fa-solid fa-link text-slate-300 group-hover:text-slate-900 transition-colors"></i>
+                <span class="text-slate-500 font-black text-[10px] uppercase tracking-[0.3em]">
+                    Destaque do Dia
+                </span>
             </div>
-            <a href="#" class="block px-2">
+
+            <a href="#" class="block px-2 group">
+                {{-- Manchete: Transição para um slate-700 (Dark Soft) no hover --}}
                 <h2
-                    class="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.05] tracking-tighter group-hover:text-slate-700 transition-colors duration-300">
+                    class="text-3xl md:text-5xl lg:text-5xl font-[950] text-slate-950 leading-[1.0] tracking-[-0.03em] transition-colors duration-500 group-hover:text-slate-700">
                     Polícia Civil indicia funcionários da Cacique Pneus por furto
                 </h2>
             </a>
-            <div class="mt-10">
-                <div
-                    class="w-20 h-1.5 bg-slate-200 rounded-full group-hover:w-32 group-hover:bg-slate-800 transition-all duration-500">
+
+            {{-- Linha de Separação (Sutil) --}}
+            <div class="mt-6">
+                <div class="w-12 h-1 bg-slate-950 transition-all duration-700 group-hover:w-28 group-hover:bg-slate-700">
                 </div>
             </div>
+
+            {{-- Subtítulo: Dark Soft (Slate-600) --}}
+            <p class="mt-5 text-slate-600 text-sm md:text-base max-w-lg font-bold leading-relaxed tracking-tight">
+                Investigações apontam esquema interno que causou prejuízo superior a R$ 200 mil à empresa.
+            </p>
         </div>
     </section>
 
