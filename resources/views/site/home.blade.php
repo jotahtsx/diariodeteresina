@@ -3,7 +3,6 @@
 @section('title', 'Diário de Teresina')
 
 @section('content')
-    {{-- 1. PLACAR AO VIVO --}}
     @if (isset($hasLiveGames) && $hasLiveGames)
         <div class="mb-12 flex justify-center px-4">
             <a href="#" class="block w-full max-w-2xl transition-transform active:scale-95 group">
@@ -26,28 +25,23 @@
         </div>
     @endif
 
-    {{-- 2. BANNER PUBLICIDADE TOPO --}}
     <section class="max-w-7xl mx-auto px-4 mb-10 mt-6">
         <div class="flex flex-col items-center">
-            {{-- Identificação Soft --}}
-            <div class="flex items-center gap-4 mb-3 w-full max-w-[970px]">
+            <div class="flex items-center gap-4 mb-3 w-full" style="max-width: 970px;">
                 <span class="text-[9px] text-slate-500 uppercase tracking-[0.3em] font-bold whitespace-nowrap">
                     Espaço Publicitário
                 </span>
-                <div class="h-px bg-slate-200 flex-grow opacity-50"></div>
+                <div class="h-px bg-slate-200 grow opacity-50"></div>
             </div>
 
-            {{-- Container Dark Premium --}}
-            <div
-                class="w-full max-w-[970px] aspect-[970/90] bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-xl">
+            <div style="max-width: 970px;"
+                class="w-full aspect-970/90 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-xl">
 
                 @if (isset($adHeader))
-                    {{-- Código do Anunciante vindo do banco --}}
                     <div class="w-full h-full">
                         {!! $adHeader->code !!}
                     </div>
                 @else
-                    {{-- Placeholder quando não há anúncio no topo --}}
                     <div
                         class="flex items-center gap-6 px-8 text-slate-500 group-hover:text-slate-300 transition-colors cursor-pointer">
                         <div class="hidden md:block">
@@ -69,7 +63,6 @@
         </div>
     </section>
 
-    {{-- 3. NOTÍCIA DE DESTAQUE DINÂMICA --}}
     @if (isset($postDestaque))
         <section class="mb-14 mt-10 flex justify-center px-4">
             <div class="max-w-4xl w-full flex flex-col items-center text-center group">
@@ -98,7 +91,6 @@
         </section>
     @endif
 
-    {{-- 4. GRID PRINCIPAL --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             @if (isset($postsPrincipais[0]))
@@ -142,7 +134,6 @@
         </div>
     </div>
 
-    {{-- 5. HORIZONTAIS --}}
     <div class="max-w-6xl mx-auto px-4 mb-20 space-y-12">
         @foreach ($postsRestante->take(2) as $h)
             <div class="group flex flex-col md:flex-row gap-8 border-b border-slate-100 pb-12">
@@ -168,7 +159,6 @@
         @endforeach
     </div>
 
-    {{-- 6. BLOCO 4 COLUNAS (ADS + 3 NEWS) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
             {{-- PUB --}}
@@ -186,7 +176,6 @@
                         Planos</a>
                 </div>
             </div>
-            {{-- 3 NEWS --}}
             @foreach ($postsRestante->skip(2)->take(3) as $item)
                 <div class="group flex flex-col border-b border-slate-100 pb-4">
                     <div class="mb-3">
@@ -246,13 +235,13 @@
 
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-            {{-- PUB --}}
             <div class="group flex flex-col h-full bg-slate-50 border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all"
                 style="border-radius: 18px;">
                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Publicidade</span>
                 <div class="grow flex flex-col justify-center items-center text-center space-y-4">
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100">
-                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i></div>
+                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i>
+                    </div>
                     <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">Anuncie Aqui</h4>
                 </div>
                 <div class="mt-4 pt-4 border-t border-slate-200 text-center">
@@ -261,7 +250,6 @@
                         Planos</a>
                 </div>
             </div>
-            {{-- 3 NEWS --}}
             @foreach ($postsRestante->skip(2)->take(3) as $item)
                 <div class="group flex flex-col border-b border-slate-100 pb-4">
                     <div class="mb-3">
@@ -283,21 +271,16 @@
 
     <section class="max-w-7xl mx-auto px-4 mb-14 mt-12">
         <div class="flex flex-col items-center">
-            {{-- Header do Banner Dark --}}
-            <div class="flex items-center gap-4 mb-4 w-full max-w-[970px]">
+            <div class="flex items-center gap-4 mb-4 w-full" style="max-width: 970px;">
                 <span class="text-[9px] text-slate-500 uppercase tracking-[0.3em] font-bold whitespace-nowrap">
                     Espaço Publicitário
                 </span>
-                {{-- Linha discreta para o modo dark --}}
-                <div class="h-px bg-slate-800 flex-grow"></div>
+                <div class="h-px bg-slate-800 grow"></div>
             </div>
-
-            {{-- Container do Banner Estilo Dark --}}
-            <div
-                class="w-full max-w-[970px] aspect-[970/90] bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-2xl">
+            <div style="max-width: 970px;"
+                class="w-full aspect-970/90 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden transition-all hover:border-slate-700 group shadow-2xl">
 
                 @if (isset($adFooter))
-                    {{-- Código do Anunciante --}}
                     <div class="w-full h-full">
                         {!! $adFooter->code !!}
                     </div>
