@@ -2,78 +2,52 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    /**
-     * Campos permitidos para mass assignment
-     */
+    use HasFactory;
+
     protected $fillable = [
         'author_id',
         'category_id',
         'title',
         'slug',
+        'excerpt',
         'content',
         'image',
         'instagram_url',
         'telegram_message_id',
         'views',
         'is_featured',
+        'status', // <--- Faltava este carinha aqui!
     ];
 
-    /**
-     * Geração automática de slug único
-     */
     protected static function booted()
     {
         static::creating(function (Post $post) {
             if (empty($post->slug)) {
                 $slug = Str::slug($post->title);
-                $count = static::where('slug', 'LIKE', "{$slug}%")->count();
-                $post->slug = $count ? "{$slug}-" . ($count + 1) : $slug;
-            }
-        });
-
-        static::updating(function (Post $post) {
-            if ($post->isDirty('title')) {
-                $slug = Str::slug($post->title);
-                $count = static::where('slug', 'LIKE', "{$slug}%")
-                    ->where('id', '!=', $post->id)
-                    ->count();
-
-                $post->slug = $count ? "{$slug}-" . ($count + 1) : $slug;
+                // Usando uniqid para garantir que slugs em latim repetidos não quebrem o seeder
+                $post->slug = $slug . '-' . uniqid();
             }
         });
     }
 
     /**
-     * Autor da notícia (User)
+     * IMPORTANTE: Sua migration criou a tabela 'authors'.
+     * Verifique se a relação é com o Model Author ou User.
      */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(Author::class, 'author_id');
     }
 
-    /**
-     * Categoria da notícia
-     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    /**
-     * Notícias relacionadas (mesma categoria)
-     */
-    public function relacionadas()
-    {
-        return $this->hasMany(
-            self::class,
-            'category_id',
-            'category_id'
-        );
     }
 }

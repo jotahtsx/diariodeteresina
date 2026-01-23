@@ -4,33 +4,28 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Category::truncate();
-        Schema::enableForeignKeyConstraints();
-
-        // Lista focada na região e editorias principais
         $categories = [
-            'Política' => '#4A90E2', // Azul
-            'Polícia' => '#E57373', // Vermelho Suave
-            'Piauí' => '#4DB6AC', // Verde Água
-            'Municípios' => '#7986CB', // Indigo
-            'Ceará' => '#F06292', // Rosa/Vinho Suave
-            'Maranhão' => '#FFB74D', // Laranja
-            'Esportes' => '#81C784', // Verde
+            ['name' => 'Polícia', 'color' => '#b91c1c'],
+            ['name' => 'Política', 'color' => '#0f172a'],
+            ['name' => 'Economia', 'color' => '#15803d'],
+            ['name' => 'Cidades', 'color' => '#0369a1'],
+            ['name' => 'Esporte', 'color' => '#ea580c'],
+            ['name' => 'Cultura', 'color' => '#7e22ce'],
+            ['name' => 'Saúde', 'color' => '#0d9488'],
+            ['name' => 'Educação', 'color' => '#4338ca'],
         ];
 
-        foreach ($categories as $name => $color) {
+        foreach ($categories as $cat) {
             Category::create([
-                'name' => $name,
-                'slug' => Str::slug($name),
-                'color' => $color,
+                'name' => $cat['name'],
+                'slug' => Str::slug($cat['name']),
+                'color' => $cat['color'],
             ]);
         }
     }

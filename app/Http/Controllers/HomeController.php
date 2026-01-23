@@ -9,31 +9,63 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Puxamos os posts com as relações (Eager Loading)
-        $posts = Post::with(['author', 'category'])
+        // 1. Pega o Destaque (Prioriza is_featured, senão pega o último publicado)
+        $postDestaque = Post::with('category')
+            ->where('status', 'published')
+            ->where('is_featured', true)
             ->latest()
-            ->paginate(9);
+            ->first()
+            ??
+            Post::with('category')
+            ->where('status', 'published')
+            ->latest()
+            ->first();
 
-        // Definimos se o placar de jogos deve aparecer
-        $hasLiveGames = false;
+        if (! $postDestaque) {
+            return view('site.home');
+        }
 
-        return view('site.home', compact('posts', 'hasLiveGames'));
+        // 2. Pegamos os 3 principais seguintes (excluindo o destaque)
+        $postsPrincipais = Post::with('category')
+            ->where('status', 'published')
+            ->where('id', '!=', $postDestaque->id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        // 3. Pegamos os IDs para não repetir notícias
+        $idsUsados = array_merge([$postDestaque->id], $postsPrincipais->pluck('id')->toArray());
+
+        // 4. Pegamos o restante das notícias
+        $postsRestante = Post::with('category')
+            ->where('status', 'published')
+            ->whereNotIn('id', $idsUsados)
+            ->latest()
+            ->take(14)
+            ->get();
+
+        $hasLiveGames = true;
+
+        return view('site.home', compact('postDestaque', 'postsPrincipais', 'postsRestante', 'hasLiveGames'));
     }
 
     public function showPost(Post $post)
     {
-        $post->load(['author', 'category']);
+        // Incrementa visualizações ao abrir a notícia
+        $post->increment('views');
 
-        return view('site.posts.post', compact('post'));
+        $post->load(['category']); // Removi 'author' caso não esteja usando ainda para evitar erros
+
+        return view('site.post', compact('post'));
     }
 
     public function showCategory(Category $category)
     {
-        $posts = Post::with(['author', 'category'])
+        $posts = Post::with(['category'])
             ->where('category_id', $category->id)
             ->latest()
             ->paginate(9);
 
-        return view('site.category.index', compact('category', 'posts'));
+        return view('site.category', compact('category', 'posts'));
     }
 }
