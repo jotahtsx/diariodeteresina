@@ -60,9 +60,9 @@
             </div>
 
             <a href="#" class="block px-2 group">
-                {{-- Manchete: Transição para um slate-700 (Dark Soft) no hover --}}
+                {{-- Trocado leading-[1.0] por leading-none para remover o warning --}}
                 <h2
-                    class="text-3xl md:text-5xl lg:text-5xl font-[950] text-slate-950 leading-[1.0] tracking-[-0.03em] transition-colors duration-500 group-hover:text-slate-700">
+                    class="text-3xl md:text-5xl lg:text-5xl font-[950] text-slate-950 leading-none tracking-[-0.03em] transition-colors duration-500 group-hover:text-slate-700">
                     Polícia Civil indicia funcionários da Cacique Pneus por furto
                 </h2>
             </a>
