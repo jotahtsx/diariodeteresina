@@ -3,7 +3,8 @@
 @section('title', 'Diário de Teresina')
 
 @section('content')
-    @if (isset($hasLiveGames) && $hasLiveGames)
+    {{-- O segundo parâmetro 'false' é o valor padrão caso nunca tenha sido clicado no admin --}}
+    @if (cache('has_live_games', false))
         <div class="mb-12 flex justify-center px-4">
             <a href="#" class="block w-full max-w-2xl transition-transform active:scale-95 group">
                 <div style="border-radius: 25px; background-color: #27ae60;"
