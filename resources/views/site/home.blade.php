@@ -3,8 +3,30 @@
 @section('title', 'Diário de Teresina')
 
 @section('content')
-    {{-- O segundo parâmetro 'false' é o valor padrão caso nunca tenha sido clicado no admin --}}
-    @if (cache('has_live_games', false))
+    {{-- Prioridade 1: Lutas (Vermelho) --}}
+    @if (cache('has_live_fights', false))
+        <div class="mb-12 flex justify-center px-4">
+            <a href="#" class="block w-full max-w-2xl transition-transform active:scale-95 group">
+                <div style="border-radius: 25px; background-color: #c0392b;"
+                    class="py-4 px-6 shadow-xl shadow-red-900/40 border border-red-400/30 text-center hover:brightness-110 transition-all duration-500 animate-soft-glow">
+                    <div class="flex items-center justify-center gap-3">
+                        <span class="relative flex h-3 w-3">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                        </span>
+                        <span
+                            class="text-white font-black uppercase tracking-[0.12em] text-sm sm:text-base md:text-lg whitespace-nowrap"
+                            style="text-shadow: 1px 2px 4px rgba(0,0,0,0.3);">
+                            {{ cache('fight_title', 'ACOMPANHE AS LUTAS AO VIVO') }}
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {{-- Prioridade 2: Futebol (Verde) --}}
+    @elseif (cache('has_live_games', false))
         <div class="mb-12 flex justify-center px-4">
             <a href="#" class="block w-full max-w-2xl transition-transform active:scale-95 group">
                 <div style="border-radius: 25px; background-color: #27ae60;"
@@ -167,8 +189,8 @@
                 style="border-radius: 18px;">
                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Publicidade</span>
                 <div class="grow flex flex-col justify-center items-center text-center space-y-4">
-                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100"><i
-                            class="fa-solid fa-store text-slate-300 text-2xl"></i></div>
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100">
+                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i></div>
                     <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">Anuncie Aqui</h4>
                 </div>
                 <div class="mt-4 pt-4 border-t border-slate-200 text-center">
