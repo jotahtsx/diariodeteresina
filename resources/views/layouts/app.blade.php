@@ -5,32 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title', 'Diário de Teresina')</title>
+    <title>{{ config('app.name') }}</title>
 
-    {{-- SEO básico --}}
-    <meta name="description" content="@yield('description', 'Notícias de Teresina e do Piauí em tempo real')">
-
-    {{-- Fonts / Icons (se estiver usando FontAwesome) --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    {{-- VITE (OBRIGATÓRIO) --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Filament Styles --}}
+    @filamentStyles
+    @livewireStyles
 </head>
 
-<body class="bg-gray-50 text-gray-900 antialiased">
+<body class="font-sans antialiased">
 
-    {{-- HEADER --}}
-    @include('site.partials.header')
+    {{ $slot }}
 
-    {{-- CONTEÚDO PRINCIPAL --}}
-    <main>
-        @yield('content')
-    </main>
-
-    {{-- FOOTER (opcional) --}}
-    {{-- @include('site.partials.footer') --}}
-
+    {{-- Filament Scripts --}}
+    @filamentScripts
+    @livewireScripts
 </body>
 
 </html>
