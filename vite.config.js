@@ -6,14 +6,19 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-            'resources/assets/css/app.css',
-            'resources/assets/js/app.js'
+                'resources/css/app.css',
+                'resources/js/app.js'
             ],
             refresh: true,
         }),
         tailwindcss(),
     ],
     server: {
+        // Adicione isso para o Docker conseguir falar com o seu navegador no Zorin
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
