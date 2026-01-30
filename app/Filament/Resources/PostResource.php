@@ -24,13 +24,20 @@ class PostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            // Removi o Group principal. Agora as Sections ditam a largura.
             ->schema([
-
-                // BLOCO 1: Ocupa a largura total disponível pelo painel
+                // BLOCO 1: Identidade e SEO
                 Forms\Components\Section::make('Informações Básicas')
-                    ->description('Título, slug e resumo da notícia')
+                    ->description('Título, tag visual e link da notícia')
                     ->schema([
+                        // NOVO: Eyebrow com o estilo solicitado
+                        Forms\Components\TextInput::make('eyebrow')
+                            ->label('Tag de Chamada (Eyebrow)')
+                            ->placeholder('Ex: URGENTE, EXCLUSIVO')
+                            ->maxLength(30)
+                            ->extraInputAttributes([
+                                'class' => 'rounded-xl border-gray-200 shadow-sm font-bold text-[#2c3e50] uppercase tracking-wider',
+                            ]),
+
                         Forms\Components\TextInput::make('title')
                             ->label('Título da Notícia')
                             ->required()
@@ -44,7 +51,7 @@ class PostResource extends Resource
                             ->label('URL Amigável')
                             ->required()
                             ->unique(Post::class, 'slug', ignoreRecord: true)
-                            ->extraInputAttributes(['class' => 'rounded-xl bg-gray-50 border-gray-100 text-xs']),
+                            ->extraInputAttributes(['class' => 'rounded-xl bg-gray-50 border-gray-100 text-xs text-gray-400']),
 
                         Forms\Components\Textarea::make('excerpt')
                             ->label('Resumo da Matéria')
@@ -52,7 +59,7 @@ class PostResource extends Resource
                             ->extraInputAttributes(['class' => 'rounded-xl border-gray-200 shadow-sm']),
                     ])->columns(1),
 
-                // BLOCO 2: Editor (Separado para manter o foco)
+                // BLOCO 2: Editor
                 Forms\Components\Section::make('Conteúdo')
                     ->schema([
                         Forms\Components\RichEditor::make('content')
@@ -72,7 +79,7 @@ class PostResource extends Resource
                             ->required(),
                     ]),
 
-                // BLOCO 4: Metadados em 3 colunas (estilo o que você fez na Categoria)
+                // BLOCO 4: Metadados
                 Forms\Components\Section::make('Configurações e Localização')
                     ->schema([
                         Forms\Components\Select::make('status')
@@ -83,6 +90,7 @@ class PostResource extends Resource
                         Forms\Components\Select::make('author_id')
                             ->label('Autor')
                             ->options(Author::pluck('name', 'id'))
+                            ->searchable()
                             ->native(false)
                             ->required(),
 
@@ -122,6 +130,11 @@ class PostResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')->circular(),
                 Tables\Columns\TextColumn::make('title')->searchable()->wrap(),
+                // Adicionada a tag na tabela para você ver sem precisar abrir o post
+                Tables\Columns\TextColumn::make('eyebrow')
+                    ->label('Tag')
+                    ->badge()
+                    ->color('gray'),
                 Tables\Columns\TextColumn::make('status')->badge(),
             ])
             ->actions([

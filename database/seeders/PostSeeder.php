@@ -24,18 +24,30 @@ class PostSeeder extends Seeder
             return;
         }
 
+        // Lista de expressões para as Tags de Chamada (Eyebrows)
+        // Elas aparecerão com 18px e font-black no seu site
+        $eyebrows = [
+            'Justiça Social', 'Urgente', 'Política de Base', 'Cultura Local',
+            'Saúde Pública', 'Educação', 'Meio Ambiente', 'Vozes da Comunidade',
+            'Esporte Amador', 'Economia Popular', 'Segurança', 'Mobilidade Urbana',
+            'Direitos Humanos', 'Luta Sindical', 'Desenvolvimento', 'Cidadania',
+        ];
+
         for ($i = 1; $i <= 60; $i++) {
             $title = fake()->sentence(rand(6, 10));
-
-            // Sorteia uma cidade das 5 que você tem no banco
             $city = $cities->random();
 
             Post::create([
                 'author_id' => $authors->random()->id,
                 'category_id' => $categories->random()->id,
-                'city_id' => $city->id, // <--- Aqui está o segredo
+                'city_id' => $city->id,
                 'state_id' => $city->state_id,
                 'title' => $title,
+
+                // Sorteia um eyebrow da lista.
+                // Colocamos uma chance de 10% de vir nulo para testar seu fallback "chamada"
+                'eyebrow' => rand(1, 10) > 1 ? collect($eyebrows)->random() : null,
+
                 'slug' => Str::slug($title) . '-' . uniqid(),
                 'content' => fake()->paragraphs(8, true),
                 'image' => "https://picsum.photos/seed/" . rand(1, 1000) . "/1280/720",
@@ -46,6 +58,6 @@ class PostSeeder extends Seeder
             ]);
         }
 
-        $this->command->info("60 posts criados com sucesso com cidades vinculadas!");
+        $this->command->info("60 posts criados com sucesso! Tags de chamada (eyebrows) integradas ao novo layout.");
     }
 }

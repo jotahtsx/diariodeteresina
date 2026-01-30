@@ -14,6 +14,7 @@ class Post extends Model
         'state_id',
         'title',
         'slug',
+        'eyebrow',
         'excerpt',
         'content',
         'image',
