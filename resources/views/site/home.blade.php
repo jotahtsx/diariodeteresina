@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <p class="mt-5 text-slate-600 text-sm md:text-base max-w-lg font-bold leading-relaxed tracking-tight">
-                    {{ Str::limit($postDestaque->content, 160) }}
+                    {{ Str::limit(strip_tags($postDestaque->content), 160) }}
                 </p>
             </div>
         </section>
@@ -190,7 +190,8 @@
                 <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Publicidade</span>
                 <div class="grow flex flex-col justify-center items-center text-center space-y-4">
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100">
-                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i></div>
+                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i>
+                    </div>
                     <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">Anuncie Aqui</h4>
                 </div>
                 <div class="mt-4 pt-4 border-t border-slate-200 text-center">

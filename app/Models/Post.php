@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // Importação essencial
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
@@ -23,34 +23,27 @@ class Post extends Model
         'views',
     ];
 
-    /**
-     * Relação com o Autor
-     * Explicitamos o 'author_id' para não haver erro de busca
-     */
+    protected $casts = [
+        'is_featured' => 'boolean',
+        'views' => 'integer',
+        'status' => 'string',
+    ];
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class, 'author_id');
     }
 
-    /**
-     * Relação com a Categoria
-     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    /**
-     * Relação com a Cidade
-     */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    /**
-     * Relação com o Estado
-     */
     public function state(): BelongsTo
     {
         return $this->belongsTo(State::class, 'state_id');

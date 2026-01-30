@@ -2,28 +2,24 @@
 
 namespace App\Providers;
 
-use App\Models\Category; // Adicionado
-use Illuminate\Support\Facades\Schema; // Adicionado
-use Illuminate\Support\Facades\View;
+use App\Models\Category;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View; // <-- 1. ADICIONE ESTE IMPORT
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // Esta verificação evita que o comando 'php artisan' quebre
-        // quando o banco de dados estiver vazio ou sendo reconstruído.
+        // 2. REGISTRE O COMPONENTE AQUI (Isso resolve o erro do x-app-layout)
+        Blade::component('layouts.app', 'app-layout');
+
         if (! app()->runningInConsole()) {
             if (Schema::hasTable('categories')) {
                 View::share('categories', Category::select('name', 'slug')
