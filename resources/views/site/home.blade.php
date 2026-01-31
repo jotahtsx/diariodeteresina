@@ -3,6 +3,7 @@
 @section('title', 'Diário de Teresina')
 
 @section('content')
+    {{-- AVISOS AO VIVO --}}
     @if (cache('has_live_fights', false))
         <div class="mb-12 flex justify-center px-4">
             <a href="#" class="block w-full max-w-2xl transition-transform active:scale-95 group">
@@ -45,6 +46,7 @@
         </div>
     @endif
 
+    {{-- PUBLICIDADE TOPO --}}
     <section class="max-w-7xl mx-auto px-4 mb-10 mt-6">
         <div class="flex flex-col items-center">
             <div class="flex items-center gap-4 mb-3 w-full" style="max-width: 970px;">
@@ -77,6 +79,7 @@
         </div>
     </section>
 
+    {{-- DESTAQUE PRINCIPAL --}}
     @if (isset($postDestaque))
         <section class="mb-14 mt-10 flex justify-center px-4">
             <div class="max-w-4xl w-full flex flex-col items-center text-center group">
@@ -108,12 +111,12 @@
         </section>
     @endif
 
+    {{-- GRID PRINCIPAL (1 GRANDE + LATERAIS) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             @if (isset($postsPrincipais[0]))
                 <div class="group flex flex-col border-b border-slate-100 pb-6">
                     <div class="flex items-center justify-between mb-3">
-                        {{-- Tag de Chamada em Estilo Natural --}}
                         <span style="color: #2c3e50;" class="text-[18px] font-black tracking-tight">
                             {{ $postsPrincipais[0]->eyebrow ?? 'chamada' }}
                         </span>
@@ -136,10 +139,8 @@
                 @foreach ($postsPrincipais->skip(1) as $p)
                     <div class="group flex flex-col border-b border-slate-100 pb-6 mb-6">
                         <div class="flex items-center justify-between mb-3">
-                            {{-- Aplicando o mesmo padrão nos cards da direita --}}
-                            <span style="color: #2c3e50;" class="text-[18px] font-black tracking-tight">
-                                {{ $p->eyebrow ?? 'chamada' }}
-                            </span>
+                            <span style="color: #2c3e50;"
+                                class="text-[18px] font-black tracking-tight">{{ $p->eyebrow ?? 'chamada' }}</span>
                         </div>
                         <a href="{{ route('site.post', $p->slug) }}" class="relative overflow-hidden mb-4 block"
                             style="border-radius: 18px; height: 240px;">
@@ -155,39 +156,115 @@
         </div>
     </div>
 
+    {{-- PRIMEIRO BLOCO MISTO: 1 ANÚNCIO + 3 NOTÍCIAS (Início do Restante) --}}
+    <div class="max-w-6xl mx-auto px-4 mb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+            <div class="group flex flex-col h-full bg-slate-50 border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all"
+                style="border-radius: 18px;">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Publicidade</span>
+                <div class="grow flex flex-col justify-center items-center text-center space-y-4">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100">
+                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">Anuncie Aqui</h4>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-200 text-center">
+                    <a href="#"
+                        class="block w-full py-2 bg-white border border-slate-200 rounded-lg text-[10px] font-black uppercase text-slate-600 group-hover:bg-slate-800 group-hover:text-white transition-all">Ver
+                        Planos</a>
+                </div>
+            </div>
+
+            @foreach ($postsRestante->slice(0, 3) as $r)
+                <div class="group flex flex-col border-b border-slate-100 pb-6 lg:border-0 lg:pb-0">
+                    <div class="mb-3">
+                        <span style="color: #2c3e50;"
+                            class="text-[18px] font-black tracking-tight">{{ $r->eyebrow ?? 'chamada' }}</span>
+                    </div>
+                    <a href="{{ route('site.post', $r->slug) }}" class="relative overflow-hidden mb-4 block"
+                        style="border-radius: 18px; height: 160px;">
+                        <img src="{{ Str::startsWith($r->image, ['http://', 'https://']) ? $r->image : asset('storage/' . $r->image) }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </a>
+                    <h3
+                        class="text-base font-black text-slate-900 leading-tight group-hover:text-slate-700 transition-colors">
+                        <a href="{{ route('site.post', $r->slug) }}">{{ $r->title }}</a>
+                    </h3>
+                    <p class="mt-2 text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                        {{ Str::limit(strip_tags($r->content), 90) }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- NOTÍCIAS HORIZONTAIS (Continuando a sequência) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20 space-y-12">
-        @foreach ($postsRestante->take(2) as $h)
+        @foreach ($postsRestante->slice(3, 2) as $h)
             <div class="group flex flex-col md:flex-row gap-8 border-b border-slate-100 pb-12">
-                {{-- Lado da Imagem --}}
                 <a href="{{ route('site.post', $h->slug) }}" class="md:w-5/12 block">
                     <div class="relative overflow-hidden" style="border-radius: 18px; height: 320px;">
                         <img src="{{ Str::startsWith($h->image, ['http://', 'https://']) ? $h->image : ($h->image ? asset('storage/' . $h->image) : 'https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1000') }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
                     </div>
                 </a>
-
-                {{-- Lado do Conteúdo --}}
                 <div class="md:w-7/12 flex flex-col justify-center">
                     <div class="flex items-center mb-4">
-                        {{-- O NOVO PADRÃO: Tag de Chamada assumindo o comando --}}
-                        <span style="color: #2c3e50;" class="text-[18px] font-black tracking-tight">
-                            {{ $h->eyebrow ?? 'chamada' }}
-                        </span>
+                        <span style="color: #2c3e50;"
+                            class="text-[18px] font-black tracking-tight">{{ $h->eyebrow ?? 'chamada' }}</span>
                     </div>
-
                     <h2
                         class="text-3xl md:text-4xl font-black text-slate-900 leading-[1.1] tracking-tighter group-hover:text-slate-700 transition-colors">
                         <a href="{{ route('site.post', $h->slug) }}">{{ $h->title }}</a>
                     </h2>
-
                     <p class="mt-4 text-slate-500 text-lg leading-relaxed line-clamp-3">
-                        {{ Str::limit(strip_tags($h->content), 180) }}
-                    </p>
+                        {{ Str::limit(strip_tags($h->content), 180) }}</p>
                 </div>
             </div>
         @endforeach
     </div>
 
+    {{-- SEGUNDO BLOCO MISTO: 1 ANÚNCIO + 3 NOTÍCIAS (Continuando a sequência) --}}
+    <div class="max-w-6xl mx-auto px-4 mb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+            <div class="group flex flex-col h-full bg-slate-50 border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all"
+                style="border-radius: 18px;">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Publicidade</span>
+                <div class="grow flex flex-col justify-center items-center text-center space-y-4">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-slate-100">
+                        <i class="fa-solid fa-store text-slate-300 text-2xl"></i>
+                    </div>
+                    <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">Anuncie Aqui</h4>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-200 text-center">
+                    <a href="#"
+                        class="block w-full py-2 bg-white border border-slate-200 rounded-lg text-[10px] font-black uppercase text-slate-600 group-hover:bg-slate-800 group-hover:text-white transition-all">Ver
+                        Planos</a>
+                </div>
+            </div>
+
+            @foreach ($postsRestante->slice(5, 3) as $r)
+                <div class="group flex flex-col border-b border-slate-100 pb-6 lg:border-0 lg:pb-0">
+                    <div class="mb-3">
+                        <span style="color: #2c3e50;"
+                            class="text-[18px] font-black tracking-tight">{{ $r->eyebrow ?? 'chamada' }}</span>
+                    </div>
+                    <a href="{{ route('site.post', $r->slug) }}" class="relative overflow-hidden mb-4 block"
+                        style="border-radius: 18px; height: 160px;">
+                        <img src="{{ Str::startsWith($r->image, ['http://', 'https://']) ? $r->image : asset('storage/' . $r->image) }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </a>
+                    <h3
+                        class="text-base font-black text-slate-900 leading-tight group-hover:text-slate-700 transition-colors">
+                        <a href="{{ route('site.post', $r->slug) }}">{{ $r->title }}</a>
+                    </h3>
+                    <p class="mt-2 text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                        {{ Str::limit(strip_tags($r->content), 90) }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- NOTÍCIAS DAS CIDADES --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="flex items-center justify-between mb-8 border-b-2 border-slate-900 pb-4">
             <h2 class="text-xl font-black uppercase tracking-tighter text-slate-800">Notícias das Cidades</h2>
@@ -219,6 +296,7 @@
         </div>
     </div>
 
+    {{-- PUB FOOTER --}}
     <section class="max-w-7xl mx-auto px-4 mb-14 mt-12">
         <div class="flex flex-col items-center">
             <div class="flex items-center gap-4 mb-4 w-full" style="max-width: 970px;">
