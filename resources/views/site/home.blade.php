@@ -3,7 +3,6 @@
 @section('title', 'Diário de Teresina')
 
 @section('content')
-    {{-- AVISOS AO VIVO --}}
     @if (cache('has_live_fights', false))
         <div class="mb-12 flex justify-center px-4">
             <a href="#" class="block w-full max-w-2xl transition-transform active:scale-95 group">
@@ -46,7 +45,6 @@
         </div>
     @endif
 
-    {{-- PUBLICIDADE TOPO --}}
     <section class="max-w-7xl mx-auto px-4 mb-10 mt-6">
         <div class="flex flex-col items-center">
             <div class="flex items-center gap-4 mb-3 w-full" style="max-width: 970px;">
@@ -79,7 +77,6 @@
         </div>
     </section>
 
-    {{-- DESTAQUE PRINCIPAL --}}
     @if (isset($postDestaque))
         <section class="mb-14 mt-10 flex justify-center px-4">
             <div class="max-w-4xl w-full flex flex-col items-center text-center group">
@@ -111,7 +108,6 @@
         </section>
     @endif
 
-    {{-- GRID PRINCIPAL (1 GRANDE + LATERAIS) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             @if (isset($postsPrincipais[0]))
@@ -156,7 +152,6 @@
         </div>
     </div>
 
-    {{-- PRIMEIRO BLOCO MISTO: 1 ANÚNCIO + 3 NOTÍCIAS (Início do Restante) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
             <div class="group flex flex-col h-full bg-slate-50 border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all"
@@ -197,7 +192,6 @@
         </div>
     </div>
 
-    {{-- NOTÍCIAS HORIZONTAIS (Continuando a sequência) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20 space-y-12">
         @foreach ($postsRestante->slice(3, 2) as $h)
             <div class="group flex flex-col md:flex-row gap-8 border-b border-slate-100 pb-12">
@@ -223,7 +217,6 @@
         @endforeach
     </div>
 
-    {{-- SEGUNDO BLOCO MISTO: 1 ANÚNCIO + 3 NOTÍCIAS (Continuando a sequência) --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
             <div class="group flex flex-col h-full bg-slate-50 border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all"
@@ -264,7 +257,6 @@
         </div>
     </div>
 
-    {{-- NOTÍCIAS DAS CIDADES --}}
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="flex items-center justify-between mb-8 border-b-2 border-slate-900 pb-4">
             <h2 class="text-xl font-black uppercase tracking-tighter text-slate-800">Notícias das Cidades</h2>
@@ -296,7 +288,6 @@
         </div>
     </div>
 
-    {{-- PUB FOOTER --}}
     <section class="max-w-7xl mx-auto px-4 mb-14 mt-12">
         <div class="flex flex-col items-center">
             <div class="flex items-center gap-4 mb-4 w-full" style="max-width: 970px;">

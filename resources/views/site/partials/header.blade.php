@@ -77,9 +77,9 @@
     <div class="container mx-auto px-4 h-16 flex items-center justify-between gap-6">
         <nav id="categories-list"
             class="flex items-center space-x-8 overflow-x-auto no-scrollbar py-2
-           scroll-smooth cursor-grab active:cursor-grabbing">
+   scroll-smooth cursor-grab active:cursor-grabbing">
             <a href="{{ route('site.home') }}"
-                class="text-gray-900 hover:text-[#EA2027] font-extrabold text-[14px] transition-all whitespace-nowrap uppercase tracking-tight">
+                class="{{ Route::is('site.home') ? 'font-[950] text-[#EA2027]' : 'font-medium text-gray-600' }} hover:text-[#EA2027] text-[14px] transition-all whitespace-nowrap uppercase tracking-tight">
                 Últimas
             </a>
 
@@ -88,23 +88,17 @@
                     @php
                         $isEsporte = str_contains(strtolower($cat->name), 'esporte');
                         $statusCache = cache('has_live_games', false);
+                        $isActive = request()->is('categoria/' . $cat->slug);
                     @endphp
 
                     <a href="{{ route('site.categoria', $cat->slug) }}"
-                        class="relative text-gray-600 hover:text-[#EA2027] font-bold text-[14px] transition-all whitespace-nowrap uppercase tracking-tight flex items-center gap-2">
+                        class="relative {{ $isActive ? 'font-[950] text-[#EA2027]' : 'font-medium text-gray-600' }} hover:text-[#EA2027] text-[14px] transition-all whitespace-nowrap uppercase tracking-tight flex items-center gap-2">
 
                         {{ $cat->name }}
 
                         @if ($isEsporte && $statusCache)
+                            {{-- Seu código do ícone de live game mantido --}}
                             <div class="relative flex items-center justify-center w-5 h-5">
-                                <svg class="animate-spin h-5 w-5 text-green-500 opacity-50"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
                                 <span class="absolute flex h-2 w-2">
                                     <span
                                         class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-600 opacity-75"></span>
@@ -117,7 +111,7 @@
             @endisset
         </nav>
 
-        <a href="https://wa.me/5586994173636" target="_blank" class="hidden lg:flex items-center group transition-all">
+        <a href="https://wa.me/5586994173635" target="_blank" class="hidden lg:flex items-center group transition-all">
 
             <div
                 class="flex items-center bg-[#2ecc71]/10 group-hover:bg-[#2ecc71]/20 py-2.5 px-6 rounded-[25px] border border-[#2ecc71]/20 transition-all shadow-sm group-hover:shadow-md">
@@ -130,7 +124,7 @@
                     </span>
                     <span
                         class="text-gray-800 text-[15px] font-bold font-mono tracking-tighter group-hover:text-black transition-colors">
-                        86 99417-3636
+                        86 99417-3635
                     </span>
                 </div>
             </div>
