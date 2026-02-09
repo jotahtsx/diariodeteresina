@@ -2,7 +2,7 @@
     <div class="container mx-auto h-full px-4 flex items-center justify-between">
 
         <div class="flex-1 flex justify-start">
-            <button class="text-white hover:opacity-70 transition-opacity p-2 focus:outline-none">
+            <button @click="open = true" class="text-white hover:opacity-70 transition-opacity p-2 focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                     stroke="currentColor" class="w-7 h-7">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -129,7 +129,6 @@
                 </div>
             </div>
         </a>
-
     </div>
 </div>
 
