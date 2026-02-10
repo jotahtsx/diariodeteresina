@@ -11,9 +11,35 @@
             </button>
         </div>
 
-        <div class="flex-none">
-            <a href="{{ route('site.home') }}">
-                <h1 class="text-2xl md:text-3xl font-black tracking-tighter text-white leading-none">
+        <div class="flex-none py-2">
+            <a href="{{ route('site.home') }}" class="flex flex-row items-center gap-3">
+                <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" class="h-10 w-auto">
+                    <line x1="10" y1="70" x2="190" y2="70" stroke="white" stroke-width="2" />
+                    <line x1="10" y1="74" x2="190" y2="74" stroke="white" stroke-width="1" />
+
+                    <path d="M100 10 L85 70 M100 10 L115 70" stroke="white" stroke-width="4" fill="none" />
+
+                    <line x1="100" y1="20" x2="30" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                    <line x1="100" y1="30" x2="45" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                    <line x1="100" y1="40" x2="60" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                    <line x1="100" y1="50" x2="75" y2="70" stroke="white"
+                        stroke-width="0.8" />
+
+                    <line x1="100" y1="20" x2="170" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                    <line x1="100" y1="30" x2="155" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                    <line x1="100" y1="40" x2="140" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                    <line x1="100" y1="50" x2="125" y2="70" stroke="white"
+                        stroke-width="0.8" />
+                </svg>
+
+                <h1 class="text-xl md:text-2xl font-[900] tracking-tighter text-white leading-none"
+                    style="font-family: 'Raleway', sans-serif;">
                     Diário de Teresina
                 </h1>
             </a>
@@ -111,22 +137,21 @@
             @endisset
         </nav>
 
-        <a href="https://wa.me/5586994173635" target="_blank" class="hidden lg:flex items-center group transition-all">
+        <a href="https://wa.me/5586994173635" target="_blank"
+            class="hidden lg:flex items-center group transition-all ml-10 pl-6 border-l border-gray-100">
 
-            <div
-                class="flex items-center bg-[#2ecc71]/10 group-hover:bg-[#2ecc71]/20 py-2.5 px-6 rounded-[25px] border border-[#2ecc71]/20 transition-all shadow-sm group-hover:shadow-md">
-                {{-- Ícone WhatsApp --}}
-                <i class="fa-brands fa-whatsapp text-[#2ecc71] text-xl mr-3"></i>
+            {{-- Ícone WhatsApp - Mantive o destaque na cor para conversão --}}
+            <i
+                class="fa-brands fa-whatsapp text-[#2ecc71] text-2xl mr-3 group-hover:scale-110 transition-transform"></i>
 
-                <div class="flex flex-col leading-tight">
-                    <span class="text-[#2ecc71] text-[10px] font-black uppercase tracking-wider">
-                        Sugestões
-                    </span>
-                    <span
-                        class="text-gray-800 text-[15px] font-bold font-mono tracking-tighter group-hover:text-black transition-colors">
-                        86 99417-3635
-                    </span>
-                </div>
+            <div class="flex flex-col leading-tight">
+                <span class="text-[#2ecc71] text-[10px] font-black uppercase tracking-[0.15em]">
+                    Sugestões
+                </span>
+                <span
+                    class="text-gray-600 text-[15px] font-bold font-mono tracking-tighter group-hover:text-black transition-colors">
+                    86 99417-3635
+                </span>
             </div>
         </a>
     </div>
