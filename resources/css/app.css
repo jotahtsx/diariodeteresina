@@ -1,8 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+    :root {
+        --background: 255 255 255;
+        --foreground: 0 0 0;
+    }
+
+    .dark {
+        --background: 15 23 42;
+        --foreground: 248 250 252;
+    }
+}
+
+@theme {
+    /* No v4, para usar a estratégia de classe, você define a variante assim: */
+    --variant-dark: : where(.dark, .dark &);
+}
+
+body {
+    @apply transition-colors duration-500;
+}
+
 @keyframes softEntry {
-    from { opacity: 0; transform: translateY(-20px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .animate-soft-entry {
     animation: softEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }
