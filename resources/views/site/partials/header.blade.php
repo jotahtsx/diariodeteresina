@@ -1,12 +1,13 @@
 <header style="background-color: #EA2027; height: 70px;" class="sticky top-0 z-50 shadow-lg">
     <div class="container mx-auto h-full px-4 grid grid-cols-3 items-center">
         <div class="flex justify-start">
-            <button @click="open = true" class="text-white hover:opacity-70 transition-opacity p-2 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                    stroke="currentColor" class="w-7 h-7">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+            <button @click="open = true"
+                class="text-white hover:opacity-70 transition-opacity p-2 focus:outline-none cursor-pointer">
+                <div class="space-y-1.5 flex flex-col items-start">
+                    <span class="block w-7 h-0.5 bg-white rounded-full"></span>
+                    <span class="block w-5 h-0.5 bg-white rounded-full"></span>
+                    <span class="block w-7 h-0.5 bg-white rounded-full"></span>
+                </div>
             </button>
         </div>
 
@@ -51,11 +52,15 @@
             </div>
 
             <div class="flex items-center gap-3 pl-3 border-l border-white/20">
-                <button x-data="{ darkMode: document.documentElement.classList.contains('dark') }"
-                    @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')"
-                    class="relative w-8 h-8 flex items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:scale-110 focus:outline-none">
-
-                    {{-- Usamos x-show individual com absolute para os ícones não brigarem por espaço --}}
+                <button x-data="{
+                    darkMode: localStorage.getItem('theme') === 'dark',
+                    toggle() {
+                        this.darkMode = !this.darkMode;
+                        localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+                        document.documentElement.classList.toggle('dark', this.darkMode);
+                    }
+                }" x-init="document.documentElement.classList.toggle('dark', darkMode)" @click="toggle()"
+                    class="relative w-8 h-8 flex items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:scale-110 focus:outline-none cursor-pointer">
                     <i x-show="!darkMode" class="fa-solid fa-moon text-lg absolute"></i>
                     <i x-show="darkMode" x-cloak class="fa-solid fa-sun text-yellow-400 text-lg absolute"></i>
                 </button>
