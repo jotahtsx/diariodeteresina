@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class', 
-
+  darkMode: 'class',
   content: [
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
@@ -10,8 +9,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Se você quiser padronizar o seu vermelho do portal
-        'portal-red': '#EA2027',
+        'portal-blue': '#1e40af',
+        'portal-yellow': '#facc15',
+        'portal-red': '#1e40af',
       }
     },
   },

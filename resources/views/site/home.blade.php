@@ -1,6 +1,6 @@
 @extends('site.master')
 
-@section('title', 'Diário de Teresina')
+@section('title', 'Pebas 40º')
 
 @section('content')
     @if (cache('has_live_fights', false))
@@ -77,23 +77,23 @@
         </div>
     </section>
 
-    @if (isset($postDestaque))
+    @if (isset($postFeature))
         <section class="mb-14 mt-10 flex justify-center px-4">
             <div class="max-w-4xl w-full flex flex-col items-center text-center group">
                 <div class="mb-5 flex flex-col items-center gap-3">
                     <div class="flex items-center gap-4">
-                        <span style="background-color: {{ $postDestaque->category->color ?? '#000' }};"
+                        <span style="background-color: {{ $postFeature->category->color ?? '#000' }};"
                             class="text-white font-black text-[11px] px-3 py-1.5 uppercase tracking-[0.2em] border-l-4 border-white/20">
-                            {{ $postDestaque->category->name }}
+                            {{ $postFeature->category->name }}
                         </span>
                         <span class="text-slate-500 font-black text-[10px] uppercase tracking-[0.3em]">Destaque do
                             Dia</span>
                     </div>
                 </div>
-                <a href="{{ route('site.post', $postDestaque->slug) }}" class="block px-2">
+                <a href="{{ route('site.post', $postFeature->slug) }}" class="block px-2">
                     <h2
                         class="text-3xl md:text-5xl lg:text-5xl font-[950] text-slate-950 leading-none tracking-[-0.03em] transition-colors duration-500 group-hover:text-slate-700">
-                        {{ $postDestaque->title }}
+                        {{ $postFeature->title }}
                     </h2>
                 </a>
                 <div class="mt-6">
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <p class="mt-5 text-slate-600 text-sm md:text-base max-w-lg font-bold leading-relaxed tracking-tight">
-                    {{ Str::limit(strip_tags($postDestaque->content), 160) }}
+                    {{ Str::limit(strip_tags($postFeature->content), 160) }}
                 </p>
             </div>
         </section>
@@ -110,29 +110,29 @@
 
     <div class="max-w-6xl mx-auto px-4 mb-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            @if (isset($postsPrincipais[0]))
+            @if (isset($postFeatures[0]))
                 <div class="group flex flex-col border-b border-slate-100 pb-6">
                     <div class="flex items-center justify-between mb-3">
                         <span style="color: #2c3e50;" class="text-[18px] font-black tracking-tight">
-                            {{ $postsPrincipais[0]->eyebrow ?? 'chamada' }}
+                            {{ $postFeatures[0]->eyebrow ?? 'chamada' }}
                         </span>
                     </div>
-                    <a href="{{ route('site.post', $postsPrincipais[0]->slug) }}"
+                    <a href="{{ route('site.post', $postFeatures[0]->slug) }}"
                         class="relative overflow-hidden mb-5 grow block" style="border-radius: 18px;">
-                        <img src="{{ Str::startsWith($postsPrincipais[0]->image, ['http://', 'https://']) ? $postsPrincipais[0]->image : ($postsPrincipais[0]->image ? asset('storage/' . $postsPrincipais[0]->image) : 'https://images.unsplash.com/photo-1504711432869-0df30b7eaf44?q=80&w=1000') }}"
+                        <img src="{{ Str::startsWith($postFeatures[0]->image, ['http://', 'https://']) ? $postFeatures[0]->image : ($postFeatures[0]->image ? asset('storage/' . $postFeatures[0]->image) : 'https://images.unsplash.com/photo-1504711432869-0df30b7eaf44?q=80&w=1000') }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             style="min-height: 500px;">
                     </a>
                     <h2 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight group-hover:text-slate-700">
-                        <a href="{{ route('site.post', $postsPrincipais[0]->slug) }}">{{ $postsPrincipais[0]->title }}</a>
+                        <a href="{{ route('site.post', $postFeatures[0]->slug) }}">{{ $postFeatures[0]->title }}</a>
                     </h2>
                     <p class="mt-2 text-slate-500 text-sm leading-relaxed">
-                        {{ Str::limit(strip_tags($postsPrincipais[0]->content), 100) }}</p>
+                        {{ Str::limit(strip_tags($postFeatures[0]->content), 100) }}</p>
                 </div>
             @endif
 
             <div class="flex flex-col justify-between">
-                @foreach ($postsPrincipais->skip(1) as $p)
+                @foreach ($postFeatures->skip(1) as $p)
                     <div class="group flex flex-col border-b border-slate-100 pb-6 mb-6">
                         <div class="flex items-center justify-between mb-3">
                             <span style="color: #2c3e50;"
@@ -262,7 +262,7 @@
             <h2 class="text-xl font-black uppercase tracking-tighter text-slate-800">Notícias das Cidades</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
-            @foreach ($postsCidades as $c)
+            @foreach ($postCities as $c)
                 <div class="group flex flex-col border-b border-slate-100 pb-6">
                     <div class="mb-3 flex flex-col gap-1">
                         <div class="flex items-center gap-2">

@@ -1,5 +1,5 @@
 @extends('site.master')
-@section('title', $post->title . ' - Diário de Teresina')
+@section('title', $post->title . ' - Pebas 40 Graus')
 
 @section('content')
     <section class="max-w-7xl mx-auto px-4 mb-10 mt-6">

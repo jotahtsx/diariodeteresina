@@ -8,20 +8,21 @@ return new class () extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->text('excerpt')->nullable()->after('title');
-        });
-    }
+		public function up(): void
+		{
+Schema::create('cities', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('slug')->unique();
+    $table->timestamps();
+});
+		}
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('excerpt');
-        });
+        Schema::dropIfExists('cities');
     }
 };

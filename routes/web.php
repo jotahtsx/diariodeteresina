@@ -11,3 +11,8 @@ Route::get('/noticia/{post:slug}', [HomeController::class, 'showPost'])->name('s
 
 // Categorias
 Route::get('/categoria/{category:slug}', [HomeController::class, 'showCategory'])->name('site.categoria');
+
+
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');

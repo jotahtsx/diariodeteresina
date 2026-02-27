@@ -1,5 +1,5 @@
 /**
- * Lógica do Banner Especial - Diário de Teresina
+ * Lógica do Banner Especial - Pebas 40 Graus
  */
 export const initBannerEspecial = async () => {
     const el = {

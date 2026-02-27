@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TopBanner extends Model
 {
-    protected $fillable = ['titulo', 'confronto', 'is_active', 'cor_fundo'];
+protected $fillable = ['titulo', 'confronto', 'code', 'is_active', 'cor_fundo', 'position'];
 }

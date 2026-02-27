@@ -1,7 +1,7 @@
 version: "3"
 services:
   laravel.test:
-    container_name: ddt-app
+    container_name: pebas-app
     build:
       context: ./vendor/laravel/sail/runtimes/8.3
       dockerfile: Dockerfile
@@ -27,7 +27,7 @@ services:
       - pgsql
       - redis
   pgsql:
-    container_name: ddt-db
+    container_name: pebas-db
     image: "postgres:15"
     ports:
       - "${FORWARD_DB_PORT:-5433}:5432"
@@ -45,7 +45,7 @@ services:
       retries: 5
       timeout: 5s
   redis:
-    container_name: ddt-redis
+    container_name: pebas-redis
     image: "redis:alpine"
     ports:
       - "${FORWARD_REDIS_PORT:-6379}:6379"

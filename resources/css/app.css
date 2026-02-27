@@ -1,47 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+    --color-portal-blue: #1e40af; 
+    --color-portal-yellow: #facc15; 
+    --color-portal-red: #1e40af; 
+
+    /* VARIANTES DE DARK MODE */
+    --variant-dark: :where(.dark, .dark &, .admin-dark, .admin-dark &);
+}
+
 @layer base {
+    /* ESTADO PADRÃO (LIGHT) - FORÇA O BRANCO */
     :root {
         --background: 255 255 255;
-        --foreground: 0 0 0;
+        --foreground: 15 23 42;
     }
 
-    .dark {
+    /* ESTADO DARK - APENAS COM AS CLASSES */
+    .dark, .admin-dark {
         --background: 15 23 42;
         --foreground: 248 250 252;
     }
+
+    body {
+        background-color: rgb(var(--background));
+        color: rgb(var(--foreground));
+        @apply transition-colors duration-300 antialiased;
+    }
+
+    /* --- TRATAMENTO PARA O DASHBOARD (MODO LIGHT) --- */
+    /* Se NÃO tiver .admin-dark, garantimos que os cards e textos obedeçam */
+    html:not(.admin-dark) .bg-white {
+        background-color: #ffffff !important;
+    }
+    
+    html:not(.admin-dark) .text-slate-900 {
+        color: #0f172a !important;
+    }
+
+    html:not(.admin-dark) .border-slate-100 {
+        border-color: #f1f5f9 !important;
+    }
+
+    /* Força o número e o título da sidebar a ficarem pretos no Light */
+    html:not(.admin-dark) .dark\:text-white {
+        color: #0f172a !important;
+    }
 }
 
-@theme {
-    /* No v4, para usar a estratégia de classe, você define a variante assim: */
-    --variant-dark: : where(.dark, .dark &);
-}
-
-body {
-    @apply transition-colors duration-500;
-}
-
+/* --- ANIMAÇÕES --- */
 @keyframes softEntry {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-
-.animate-soft-entry {
-    animation: softEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@layer utilities {
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-}
+.animate-soft-entry { animation: softEntry 0.6s ease-out forwards; }

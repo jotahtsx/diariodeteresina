@@ -6,27 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_id')->constrained();
-            $table->foreignId('author_id')->constrained();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('content');
-            $table->string('image')->nullable()->after('content');
-            $table->string('instagram_url')->nullable(); // O que você pediu
-            $table->timestamps();
-        });
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('category_id')->constrained();
+    $table->foreignId('city_id')->nullable()->constrained(); // Nem todo post é de uma cidade específica
+    $table->string('title');
+    $table->string('slug')->unique();
+    $table->string('eyebrow')->nullable(); // Aquela chamada em cima do título (ex: "EXCLUSIVO")
+    $table->text('content');
+    $table->string('image')->nullable();
+    $table->boolean('is_highlight')->default(false); // Para o post gigante do topo
+    $table->integer('views')->default(0);
+    $table->timestamp('published_at')->nullable();
+    $table->timestamps();
+});
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('posts');

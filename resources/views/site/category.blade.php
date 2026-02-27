@@ -1,6 +1,6 @@
 @extends('site.master')
 
-@section('title', $category->name . ' - Diário de Teresina')
+@section('title', $category->name . ' - Pebas 40 Graus')
 
 @section('content')
     <main class="container mx-auto px-4 max-w-5xl py-12">
