@@ -32,12 +32,14 @@
     <div class="flex min-h-screen">
         {{-- Sidebar --}}
         <aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 flex flex-col sticky top-0 h-screen transition-colors">
-            <div class="p-8">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-slate-900 dark:bg-portal-blue rounded-lg"></div>
-                    <span class="text-xl font-[950] tracking-tighter text-slate-900 dark:text-white">Pebas40º</span>
-                </div>
-            </div>
+			<div class="p-8">
+				<a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
+					{{-- Texto Principal - Aumentado para 3xl --}}
+					<h1 class="text-3xl font-[1000] tracking-tighter text-slate-900 dark:text-white transition-all duration-300 group-hover:tracking-tight">
+						Pebas<span class="text-[#FFB800] drop-shadow-sm"> 40º</span>
+					</h1>
+				</a>
+			</div>
 
             <nav class="flex-1 px-6 space-y-1">
                 <a href="{{ route('admin.dashboard') }}"
