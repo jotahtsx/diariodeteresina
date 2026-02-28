@@ -54,3 +54,18 @@
     to { opacity: 1; transform: translateY(0); }
 }
 .animate-soft-entry { animation: softEntry 0.6s ease-out forwards; }
+
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+    }
+    /* Arredonda a amostra de cor interna */
+    input[type="color"]::-webkit-color-swatch {
+        border: none;
+        border-radius: 0.5rem; /* Equivalente ao rounded-lg (8px) */
+    }
+    /* Para o Firefox */
+    input[type="color"]::-moz-color-swatch {
+        border: none;
+        border-radius: 0.5rem;
+}

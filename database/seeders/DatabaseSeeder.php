@@ -10,23 +10,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. ESTRUTURA E PERMISSÕES (Base de tudo)
+        // 1. ESTRUTURA E PERMISSÕES
         $this->call([
             RoleSeeder::class,
-            StateSeeder::class, // Estados primeiro
-            CitySeeder::class,  // Cidades depois (precisam do state_id)
+            StateSeeder::class,
+            CitySeeder::class,
         ]);
 
-        // 2. CONTEÚDO AUXILIAR
-        // DICA: Se o CategorySeeder e o PortalStructureSeeder fazem a mesma coisa,
-        // use apenas o que estiver mais completo.
-        $this->call([
-            CategorySeeder::class,
-            AuthorSeeder::class,
-            PortalStructureSeeder::class,
-        ]);
-
-        // 3. USUÁRIOS (Administração)
+        // 2. CRIAR O USUÁRIO ADMIN (O autor principal)
         if (! User::where('email', 'editor@oracle.com')->exists()) {
             $admin = User::create([
                 'name' => 'Editor Oracle',
@@ -36,8 +27,14 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole('admin');
         }
 
-        // 4. CONTEÚDO DINÂMICO (Notícias)
-        // O PostSeeder agora tem tudo que precisa: Categorias, Autores, Estados e Cidades.
+        // 3. CONTEÚDO AUXILIAR
+        $this->call([
+            CategorySeeder::class,
+            AuthorSeeder::class,
+            PortalStructureSeeder::class,
+        ]);
+
+        // 4. CONTEÚDO DINÂMICO (Usando o PostSeeder que te mandei)
         $this->call(PostSeeder::class);
     }
 }

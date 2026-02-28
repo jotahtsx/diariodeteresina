@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class City extends Model
 {
     protected $table = 'cities';
-    protected $fillable = ['state_id', 'name', 'slug'];
+	protected $fillable = ['state_id', 'name', 'slug'];
 
     public function state(): BelongsTo
     {

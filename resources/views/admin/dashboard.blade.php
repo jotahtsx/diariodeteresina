@@ -2,48 +2,55 @@
 
 @section('content')
 <div class="space-y-8 animate-soft-entry">
-    <div>
-        <h1 class="text-2xl font-[950] text-slate-900 dark:text-white tracking-tight">Dashboard</h1>
-        <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Bem-vindo ao painel do Diário de Teresina.</p>
+    {{-- Header --}}
+    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-8">
+        <div class="flex items-center gap-4">
+            {{-- Barra: Preta no light, Azul no dark --}}
+            <div class="h-12 w-1.5 bg-slate-900 dark:bg-portal-blue rounded-full"></div>
+            <div>
+                <h1 class="text-4xl font-[1000] text-slate-900 dark:text-white tracking-tighter uppercase leading-none">
+                    Dashboard
+                </h1>
+                <p class="text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">
+                    Painel de Controle Principal
+                </p>
+            </div>
+        </div>
+
+        <div class="text-right hidden sm:block bg-white dark:bg-slate-900 px-6 py-3 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Status do Sistema</span>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tighter">{{ now()->format('d . m . Y') }}</span>
+            </div>
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {{-- Grid de Stats (Hover Removido) --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden rounded-2xl">
         @php
             $cards = [
-                ['label' => 'Total de Notícias', 'value' => '1.240'],
-                ['label' => 'Visualizações Totais', 'value' => '85.4k'],
-                ['label' => 'Cidades Ativas', 'value' => '12'],
+                ['label' => 'Total de Notícias', 'value' => '1.240', 'icon' => 'fa-newspaper'],
+                ['label' => 'Visualizações Totais', 'value' => '85.4k', 'icon' => 'fa-eye'],
+                ['label' => 'Cidades Ativas', 'value' => '12', 'icon' => 'fa-location-dot'],
             ];
         @endphp
 
         @foreach($cards as $card)
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-[25px] border border-slate-100 dark:border-slate-800 shadow-sm transition-all">
-                {{-- Label com cor forte no light --}}
-                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-                    {{ $card['label'] }}
-                </span>
-                <div class="flex items-end gap-2 mt-2">
-                    {{-- Valor forçado em slate-900 no light --}}
-                    <span class="text-3xl font-[950] text-slate-900 dark:text-white">
+            <div class="p-8 {{ !$loop->last ? 'border-r border-slate-200 dark:border-slate-800' : '' }}">
+                <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-portal-blue">
+                        {{ $card['label'] }}
+                    </span>
+                    <i class="fa-solid {{ $card['icon'] }} text-slate-300 dark:text-slate-700 text-xl"></i>
+                </div>
+                <div class="mt-4">
+                    <span class="text-4xl font-[1000] text-slate-900 dark:text-white tracking-tighter">
                         {{ $card['value'] }}
                     </span>
                 </div>
             </div>
         @endforeach
-    </div>
-
-    {{-- Lista de Recentes --}}
-    <div class="bg-white dark:bg-slate-900 rounded-[30px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
-        <div class="p-6 border-b border-slate-50 dark:border-slate-800 flex justify-between items-center">
-            <h2 class="text-sm font-black uppercase tracking-widest text-slate-800 dark:text-white">Postagens Recentes</h2>
-            <a href="#" class="text-xs font-bold text-portal-blue dark:text-blue-400 hover:underline">Ver todas</a>
-        </div>
-        <div class="p-12 text-center">
-            <div class="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                <span class="text-2xl">📁</span>
-            </div>
-            <p class="text-slate-400 dark:text-slate-500 text-sm font-bold">Nenhum post encontrado para exibição.</p>
-        </div>
     </div>
 </div>
 @endsection
