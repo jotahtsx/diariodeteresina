@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         // Traz as categorias com a contagem de notícias vinculadas
         $categories = Category::withCount('posts')->orderBy('name')->get();
-        
+
         return CategoryResource::collection($categories);
     }
 
@@ -32,19 +32,19 @@ class CategoryController extends Controller
         $this->authorize('criar noticias');
 
         $data = $request->validate([
-            'name'  => 'required|string|unique:categories,name',
+            'name' => 'required|string|unique:categories,name',
             'color' => 'nullable|string|max:7',
         ]);
 
         $category = Category::create([
-            'name'  => $data['name'],
-            'slug'  => Str::slug($data['name']),
+            'name' => $data['name'],
+            'slug' => Str::slug($data['name']),
             'color' => $data['color'] ?? null,
         ]);
 
         return response()->json([
             'message' => 'Categoria criada com sucesso!',
-            'data'    => new CategoryResource($category)
+            'data' => new CategoryResource($category),
         ], 201);
     }
 
@@ -59,20 +59,20 @@ class CategoryController extends Controller
 
         $data = $request->validate([
             // O 'unique' ignora o ID atual para permitir salvar o mesmo nome se mudar só a cor
-            'name'  => 'required|string|unique:categories,name,' . $id,
+            'name' => 'required|string|unique:categories,name,' . $id,
             'color' => 'nullable|string|max:7',
         ]);
 
         // Atualizamos o nome, a cor e geramos um novo slug baseado no novo nome
         $category->update([
-            'name'  => $data['name'],
-            'slug'  => Str::slug($data['name']),
+            'name' => $data['name'],
+            'slug' => Str::slug($data['name']),
             'color' => $data['color'] ?? $category->color,
         ]);
 
         return response()->json([
             'message' => 'Categoria atualizada com sucesso!',
-            'data'    => new CategoryResource($category)
+            'data' => new CategoryResource($category),
         ]);
     }
 
@@ -88,14 +88,14 @@ class CategoryController extends Controller
         // Impede a remoção se houver posts para não quebrar o site
         if ($category->posts()->exists()) {
             return response()->json([
-                'message' => 'Não é possível remover: esta categoria possui notícias vinculadas.'
+                'message' => 'Não é possível remover: esta categoria possui notícias vinculadas.',
             ], 422);
         }
 
         $category->delete();
 
         return response()->json([
-            'message' => 'Categoria removida com sucesso!'
+            'message' => 'Categoria removida com sucesso!',
         ]);
     }
 }

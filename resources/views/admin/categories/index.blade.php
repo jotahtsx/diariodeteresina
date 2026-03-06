@@ -48,7 +48,8 @@
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                 @forelse($categories as $cat)
-                <tr class="text-sm group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                {{-- Removido 'group' e 'hover' para um design estático e limpo --}}
+                <tr class="text-sm transition-colors border-b border-slate-50 dark:border-slate-800/50 last:border-none">
                     <td class="px-6 py-4 text-slate-400 italic text-center font-medium">
                         #{{ $loop->iteration }}
                     </td>

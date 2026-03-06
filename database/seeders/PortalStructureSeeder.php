@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
 use App\Models\Author;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class PortalStructureSeeder extends Seeder
@@ -22,10 +22,10 @@ class PortalStructureSeeder extends Seeder
         foreach ($categorias as $categoria) {
             // Se o slug já existir, ele só atualiza o nome e a cor (reescreve)
             Category::updateOrCreate(
-                ['slug' => $categoria['slug']], 
+                ['slug' => $categoria['slug']],
                 [
                     'name' => $categoria['name'],
-                    'color' => $categoria['color']
+                    'color' => $categoria['color'],
                 ]
             );
         }
@@ -36,7 +36,7 @@ class PortalStructureSeeder extends Seeder
             ['name' => 'Equipe de Jornalismo'],
             [
                 'city' => 'Teresina',
-                'state' => 'PI'
+                'state' => 'PI',
             ]
         );
     }

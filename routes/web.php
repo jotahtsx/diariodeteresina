@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // --- ROTAS DO SITE (PÚBLICO) ---
@@ -12,13 +12,13 @@ Route::get('/categoria/{category:slug}', [HomeController::class, 'showCategory']
 
 // --- ROTAS DO ADMIN (PAINEL) ---
 Route::prefix('admin')->name('admin.')->group(function () {
-    
+
     // Dashboard
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
-	
-// Gestão de Categorias
+
+    // Gestão de Categorias
     Route::get('/categorias', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categorias/cadastrar', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categorias', [CategoryController::class, 'store'])->name('categories.store');

@@ -38,9 +38,9 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 // Retornamos as roles para o front-end saber o que exibir
-                'roles' => $user->getRoleNames(), 
+                'roles' => $user->getRoleNames(),
                 'permissions' => $user->getAllPermissions()->pluck('name'),
-            ]
+            ],
         ]);
     }
 
@@ -50,7 +50,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logout realizado com sucesso. Até logo!'
+            'message' => 'Logout realizado com sucesso. Até logo!',
         ]);
     }
 }

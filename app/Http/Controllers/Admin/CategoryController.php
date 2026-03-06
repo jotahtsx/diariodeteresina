@@ -14,15 +14,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // Adicionamos o withCount para a coluna de notícias funcionar
-        $categories = Category::withCount('posts')->orderBy('order', 'asc')->get();
-        
+        // O withCount é essencial para a performance da listagem
+        $categories = Category::withCount('posts')
+            ->orderBy('order', 'asc')
+            ->orderBy('name', 'asc') // Segundo critério caso a ordem seja igual
+            ->get();
+
         return view('admin.categories.index', compact('categories'));
     }
 
-    /**
-     * Exibe o formulário de criação (Nova Categoria)
-     */
     public function create()
     {
         return view('admin.categories.create');
@@ -33,26 +33,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'  => 'required|string|max:255|unique:categories,name',
-            'order' => 'nullable|integer',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+            'order' => 'nullable|integer|min:0',
             'color' => 'nullable|string|max:7',
         ]);
 
         Category::create([
-            'name'  => $request->name,
-            'slug'  => Str::slug($request->name),
-            'order' => $request->order ?? 0,
-            'color' => $request->color ?? '#1e40af',
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'order' => $validated['order'] ?? 0,
+            // Garante que a cor salve sempre em maiúsculo e com #
+            'color' => $validated['color'] ? strtoupper($validated['color']) : '#1E40AF',
         ]);
 
         return redirect()->route('admin.categories.index')
                          ->with('success', 'Categoria criada com sucesso!');
     }
 
-    /**
-     * Exibe a página de edição
-     */
     public function edit(Category $category)
     {
         return view('admin.categories.edit', compact('category'));
@@ -63,17 +61,17 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'name'  => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'order' => 'nullable|integer',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'order' => 'nullable|integer|min:0',
             'color' => 'nullable|string|max:7',
         ]);
 
         $category->update([
-            'name'  => $request->name,
-            'slug'  => Str::slug($request->name),
-            'order' => $request->order ?? 0,
-            'color' => $request->color ?? '#1e40af',
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'order' => $validated['order'] ?? 0,
+            'color' => $validated['color'] ? strtoupper($validated['color']) : '#1E40AF',
         ]);
 
         return redirect()->route('admin.categories.index')
@@ -81,23 +79,21 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove a categoria com trava de segurança
+     * Remove a categoria com trava de segurança reforçada
      */
     public function destroy(Category $category)
     {
-        // 1. Checa se existem posts vinculados
-        $postCount = $category->posts()->count();
+        // exists() é mais rápido que count() para checagem simples
+        if ($category->posts()->exists()) {
+            $postCount = $category->posts()->count();
+            $mensagem = "Ação bloqueada! Esta categoria possui {$postCount} " . ($postCount > 1 ? 'postagens vinculadas.' : 'postagem vinculada.');
 
-        if ($postCount > 0) {
-            // 2. Se houver posts, cancela a operação e avisa o usuário
-            $mensagem = "Não é possível deletar! Esta categoria possui {$postCount} " . ($postCount > 1 ? 'notícias vinculadas.' : 'notícia vinculada.');
-            
             return redirect()->back()->with('error', $mensagem);
         }
 
-        // 3. Se estiver vazia, deleta
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('success', 'Categoria removida com sucesso!');
+        return redirect()->route('admin.categories.index')
+                         ->with('success', 'Categoria removida com sucesso!');
     }
 }

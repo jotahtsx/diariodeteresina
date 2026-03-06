@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\TopBanner;
 use Illuminate\Support\Facades\Cache;
@@ -17,7 +16,7 @@ class HomeController extends Controller
             ->latest()
             ->first();
 
-        if (!$postFeature) {
+        if (! $postFeature) {
             return view('site.home');
         }
 
@@ -32,7 +31,7 @@ class HomeController extends Controller
         $idsUsados = array_merge([$postFeature->id], $postFeatures->pluck('id')->toArray());
 
         // 3. Notícias das Cidades (4 no grid inferior)
-        $postCities  = Post::with(['category', 'city'])
+        $postCities = Post::with(['category', 'city'])
             ->where('status', 'published')
             ->whereNotNull('city_id')
             ->whereNotIn('id', $idsUsados)
@@ -57,7 +56,7 @@ class HomeController extends Controller
 
         // 6. Alertas de "Ao Vivo" (Lutas, BBB, Jogos)
         // Como sua View usa cache('has_live_fights'), você pode definir aqui para teste:
-        // Cache::put('has_live_fights', true, 60); 
+        // Cache::put('has_live_fights', true, 60);
         // Cache::put('fight_title', 'ACOMPANHE O PAREDÃO AO VIVO', 60);
 
         return view('site.home', compact(
@@ -69,6 +68,6 @@ class HomeController extends Controller
             'adFooter'
         ));
     }
-    
+
     // ... manter showPost e showCategory como estão
 }
