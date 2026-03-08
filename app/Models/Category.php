@@ -10,6 +10,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    /**
+     * Campos que podem ser preenchidos em massa.
+     * Isso evita o erro de "Mass Assignment".
+     */
     protected $fillable = [
         'name',
         'slug',
@@ -18,7 +22,8 @@ class Category extends Model
     ];
 
     /**
-     * Relacionamento com as Notícias (Posts)
+     * Relacionamento: Uma categoria tem muitos Posts.
+     * Isso permite usar o withCount('posts') no Controller.
      */
     public function posts(): HasMany
     {

@@ -14,11 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // O withCount é essencial para a performance da listagem
         $categories = Category::withCount('posts')
             ->orderBy('order', 'asc')
-            ->orderBy('name', 'asc') // Segundo critério caso a ordem seja igual
-            ->get();
+            ->paginate(10);
 
         return view('admin.categories.index', compact('categories'));
     }

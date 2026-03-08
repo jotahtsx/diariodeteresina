@@ -5,9 +5,8 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Post;
-use App\Models\User; // <--- VAMOS USAR O USER
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class PostSeeder extends Seeder
 {
@@ -15,36 +14,38 @@ class PostSeeder extends Seeder
     {
         $categories = Category::all();
         $cities = City::all();
-
-        // Buscamos apenas o editor que você criou no DatabaseSeeder
         $editor = User::where('email', 'editor@oracle.com')->first();
 
         if (! $editor) {
-            $this->command->error("Editor Oracle não encontrado! Rode o DatabaseSeeder corretamente.");
+            $this->command->error("Editor Oracle não encontrado! Verifique o DatabaseSeeder.");
 
             return;
         }
 
-        $eyebrows = ['Justiça Social', 'Urgente', 'Política', 'Cultura', 'Esporte'];
+        if ($categories->isEmpty() || $cities->isEmpty()) {
+            $this->command->error("Certifique-se de que as categorias e cidades já foram populadas.");
 
-        for ($i = 1; $i <= 60; $i++) {
-            $title = fake()->sentence(rand(6, 10));
+            return;
+        }
+
+        // Criando 60 posts usando a Factory para um código mais limpo
+        Post::factory(60)->make()->each(function ($post) use ($categories, $cities, $editor) {
             $city = $cities->random();
+            $eyebrows = ['Justiça Social', 'Urgente', 'Política', 'Cultura', 'Esporte'];
 
-            Post::create([
-                'author_id' => $editor->id, // <--- AQUI O ERRO MORRE. Usamos o ID 1 (ou o ID real do User)
+            $post->fill([
+                'author_id' => $editor->id,
                 'category_id' => $categories->random()->id,
                 'city_id' => $city->id,
                 'state_id' => $city->state_id,
-                'title' => $title,
                 'eyebrow' => collect($eyebrows)->random(),
-                'slug' => Str::slug($title) . '-' . uniqid(),
-                'content' => fake()->paragraphs(5, true),
-                'image' => "https://picsum.photos/seed/".rand(1, 100)."/800/600",
-                'views' => rand(10, 1000),
-                'status' => 'published',
-                'is_featured' => ($i === 1),
-            ]);
-        }
+                // 'slug' e 'title' já vêm prontos da Factory, mas você pode sobrescrever aqui se quiser
+            ])->save();
+        });
+
+        // Garantindo que pelo menos 3 sejam destaques de forma randômica
+        Post::inRandomOrder()->take(3)->update(['is_featured' => true]);
+
+        $this->command->info("60 notícias do Pebas 40 Graus criadas com sucesso!");
     }
 }
