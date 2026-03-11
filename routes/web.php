@@ -20,6 +20,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
+
+
     // Gestão de Categprias
     Route::get('/categorias', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categorias/cadastrar', [CategoryController::class, 'create'])->name('categories.create');
@@ -35,6 +37,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/noticias/{post}/editar', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/noticias/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/noticias/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::get('/get-cities/{state_id}', [PostController::class, 'getCities'])->name('get-cities');
 });
 
 // A linha que exigia o auth.php foi removida daqui.

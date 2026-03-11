@@ -36,6 +36,7 @@
             border: 3px solid #0f172a;
         }
     </style>
+    @stack('styles')
 </head>
 
 <body class="antialiased transition-colors duration-300 bg-white dark:bg-[#0b1120]">
@@ -138,6 +139,7 @@
             </div>
         </main>
     </div>
+    @stack('scripts')
 </body>
 
 </html>

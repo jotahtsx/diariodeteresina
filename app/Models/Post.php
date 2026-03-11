@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -35,7 +36,7 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
-    // Atributos padrão para novos registros
+    // Valores padrão para evitar campos nulos no banco
     protected $attributes = [
         'views' => 0,
         'is_highlight' => false,
@@ -44,9 +45,57 @@ class Post extends Model
     ];
 
     /**
-     * Relacionamentos com "withDefault"
-     * Isso evita erro de "property of non-object" no seu Blade.
+     * MÁGICA: Eventos do Model
+     * Gera o slug automaticamente antes de salvar se estiver vazio.
      */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($post) {
+            if (empty($post->slug)) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+
+        static::updating(function ($post) {
+            if ($post->isDirty('title') && empty($post->slug)) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+    }
+
+    /**
+     * ACESSOR: URL da Imagem
+     * Retorna a URL completa ou um placeholder se não houver foto.
+     * Uso no Blade: {{ $post->image_url }}
+     */
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+
+        return asset('images/placeholder-noticia.jpg');
+    }
+
+    /**
+     * ACESSOR: Tempo de Leitura Estimado
+     * Uso no Blade: {{ $post->reading_time }} min de leitura
+     */
+    public function getReadingTimeAttribute()
+    {
+        $minutes = ceil(str_word_count(strip_tags($this->content)) / 200);
+
+        return $minutes > 0 ? $minutes : 1;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relacionamentos
+    |--------------------------------------------------------------------------
+    */
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class)->withDefault([
@@ -58,7 +107,7 @@ class Post extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id')->withDefault([
-            'name' => 'Autor Desconhecido',
+            'name' => 'Redação Pebas 40º',
         ]);
     }
 
@@ -76,13 +125,28 @@ class Post extends Model
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes (Filtros de Busca)
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Scope para buscar apenas o que está no ar.
+     * Busca apenas o que já foi publicado e cuja data já passou.
      */
     public function scopePublished($query)
     {
         return $query->whereIn('status', ['published', 'postado'])
                      ->whereNotNull('published_at')
-                     ->where('published_at', '<=', now());
+                     ->where('published_at', '<=', now())
+                     ->orderBy('published_at', 'desc');
+    }
+
+    /**
+     * Busca apenas notícias em destaque.
+     */
+    public function scopeHighlighted($query)
+    {
+        return $query->where('is_highlight', true);
     }
 }
